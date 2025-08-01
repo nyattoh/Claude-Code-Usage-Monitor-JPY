@@ -1,917 +1,920 @@
-# 🎯 Claude Code Usage Monitor
+# 🎯 Claude Code Usage Monitor (日本語版)
+
+**このリポジトリは、[Maciek-roboblog/Claude-Code-Usage-Monitor](https://github.com/Maciek-roboblog/Claude-Code-Usage-Monitor) のフォークであり、日本円でのコスト表示機能を追加し、READMEを日本語化したものです。**
+
 [![PyPI Version](https://img.shields.io/pypi/v/claude-monitor.svg)](https://pypi.org/project/claude-monitor/)
 [![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 [![codecov](https://codecov.io/gh/Maciek-roboblog/Claude-Code-Usage-Monitor/branch/main/graph/badge.svg)](https://codecov.io/gh/Maciek-roboblog/Claude-Code-Usage-Monitor)
 
-A beautiful real-time terminal monitoring tool for Claude AI token usage with advanced analytics, machine learning-based predictions, and Rich UI. Track your token consumption, burn rate, cost analysis, and get intelligent predictions about session limits.
+Claude AIのトークン使用量をリアルタイムで監視する美しいターミナルツールです。高度な分析、機械学習ベースの予測、リッチなUIを備えています。トークン消費量、バーンレート、コスト分析を追跡し、セッション制限に関するインテリジェントな予測を取得できます。
 
 ![Claude Token Monitor Screenshot](https://raw.githubusercontent.com/Maciek-roboblog/Claude-Code-Usage-Monitor/main/doc/scnew.png)
 
 ---
 
-## 📑 Table of Contents
+## 📑 目次
 
-- [✨ Key Features](#-key-features)
-- [🚀 Installation](#-installation)
-  - [⚡ Modern Installation with uv (Recommended)](#-modern-installation-with-uv-recommended)
-  - [📦 Installation with pip](#-installation-with-pip)
-  - [🛠️ Other Package Managers](#️-other-package-managers)
-- [📖 Usage](#-usage)
-  - [Get Help](#get-help)
-  - [Basic Usage](#basic-usage)
-  - [Configuration Options](#configuration-options)
-  - [Available Plans](#available-plans)
-- [🙏 Please Help Test This Release!](#-please-help-test-this-release)
-- [✨ Features & How It Works](#-features--how-it-works)
-  - [Current Features](#current-features)
-  - [Understanding Claude Sessions](#understanding-claude-sessions)
-  - [Token Limits by Plan](#token-limits-by-plan)
-  - [Smart Detection Features](#smart-detection-features)
-- [🚀 Usage Examples](#-usage-examples)
-  - [Common Scenarios](#common-scenarios)
-  - [Best Practices](#best-practices)
-- [🔧 Development Installation](#-development-installation)
-- [Troubleshooting](#troubleshooting)
-  - [Installation Issues](#installation-issues)
-  - [Runtime Issues](#runtime-issues)
-- [📞 Contact](#-contact)
-- [📚 Additional Documentation](#-additional-documentation)
-- [📝 License](#-license)
-- [🤝 Contributors](#-contributors)
-- [🙏 Acknowledgments](#-acknowledgments)
-
-
-
-## ✨ Key Features
-
-### 🚀 **v3.0.0 Major Update - Complete Architecture Rewrite**
-
-- **🔮 ML-based predictions** - P90 percentile calculations and intelligent session limit detection
-- **🔄 Real-time monitoring** - Configurable refresh rates (0.1-20 Hz) with intelligent display updates
-- **📊 Advanced Rich UI** - Beautiful color-coded progress bars, tables, and layouts with WCAG-compliant contrast
-- **🤖 Smart auto-detection** - Automatic plan switching with custom limit discovery
-- **📋 Enhanced plan support** - Updated limits: Pro (44k), Max5 (88k), Max20 (220k), Custom (P90-based)
-- **⚠️ Advanced warning system** - Multi-level alerts with cost and time predictions
-- **💼 Professional Architecture** - Modular design with Single Responsibility Principle (SRP) compliance
-- **🎨 Intelligent theming** - Scientific color schemes with automatic terminal background detection
-- **⏰ Advanced scheduling** - Auto-detected system timezone and time format preferences
-- **📈 Cost analytics** - Model-specific pricing with cache token calculations
-- **🔧 Pydantic validation** - Type-safe configuration with automatic validation
-- **📝 Comprehensive logging** - Optional file logging with configurable levels
-- **🧪 Extensive testing** - 100+ test cases with full coverage
-- **🎯 Error reporting** - Optional Sentry integration for production monitoring
-- **⚡ Performance optimized** - Advanced caching and efficient data processing
-
-### 📋 Default Custom Plan
-
-The **Custom plan** is now the default option, specifically designed for 5-hour Claude Code sessions. It monitors three critical metrics:
-- **Token usage** - Tracks your token consumption
-- **Messages usage** - Monitors message count
-- **Cost usage** - The most important metric for long sessions
-
-The Custom plan automatically adapts to your usage patterns by analyzing all your sessions from the last 192 hours (8 days) and calculating personalized limits based on your actual usage. This ensures accurate predictions and warnings tailored to your specific workflow.
+- [✨ 主な機能](#-主な機能)
+- [🚀 インストール](#-インストール)
+  - [⚡ uv を使用した最新のインストール (推奨)](#-uv-を使用した最新のインストール-推奨)
+  - [📦 pip を使用したインストール](#-pip-を使用したインストール)
+  - [🛠️ その他のパッケージマネージャー](#️-その他のパッケージマネージャー)
+- [📖 使用方法](#-使用方法)
+  - [ヘルプの表示](#ヘルプの表示)
+  - [基本的な使用方法](#基本的な使用方法)
+  - [設定オプション](#設定オプション)
+  - [利用可能なプラン](#利用可能なプラン)
+- [🙏 このリリースをテストするご協力をお願いします！](#-このリリースをテストするご協力をお願いします)
+- [✨ 機能と仕組み](#-機能と仕組み)
+  - [現在の機能](#現在の機能)
+  - [Claude セッションの理解](#claude-セッションの理解)
+  - [プランごとのトークン制限](#プランごとのトークン制限)
+  - [スマート検出機能](#スマート検出機能)
+- [🚀 使用例](#-使用例)
+  - [一般的なシナリオ](#一般的なシナリオ)
+  - [ベストプラクティス](#ベストプラクティス)
+- [🔧 開発インストール](#-開発インストール)
+- [トラブルシューティング](#トラブルシューティング)
+  - [インストールに関する問題](#インストールに関する問題)
+  - [実行時の問題](#実行時の問題)
+- [📞 お問い合わせ](#-お問い合わせ)
+- [📚 その他のドキュメント](#-その他のドキュメント)
+- [📝 ライセンス](#-ライセンス)
+- [🤝 貢献者](#-貢献者)
+- [🙏 謝辞](#-謝辞)
 
 
-## 🚀 Installation
-### ⚡ Modern Installation with uv (Recommended)
 
-**Why uv is the best choice:**
-- ✅ Creates isolated environments automatically (no system conflicts)
-- ✅ No Python version issues
-- ✅ No "externally-managed-environment" errors
-- ✅ Easy updates and uninstallation
-- ✅ Works on all platforms
+## ✨ 主な機能
 
-The fastest and easiest way to install and use the monitor:
+### 🚀 **v3.0.0 メジャーアップデート - 完全なアーキテクチャの書き換え**
+
+- **🔮 MLベースの予測** - P90パーセンタイル計算とインテリジェントなセッション制限検出
+- **🔄 リアルタイム監視** - 設定可能なリフレッシュレート (0.1-20 Hz) とインテリジェントな表示更新
+- **📊 高度なリッチUI** - 美しい色分けされたプログレスバー、テーブル、WCAG準拠のコントラストを持つレイアウト
+- **🤖 スマート自動検出** - カスタム制限検出による自動プラン切り替え
+- **📋 強化されたプランサポート** - 更新された制限: Pro (44k), Max5 (88k), Max20 (220k), Custom (P90ベース)
+- **⚠️ 高度な警告システム** - コストと時間の予測を伴う多段階アラート
+- **💼 プロフェッショナルなアーキテクチャ** - 単一責任の原則 (SRP) に準拠したモジュラー設計
+- **🎨 インテリジェントなテーマ設定** - 自動ターミナル背景検出機能を備えた科学的な配色
+- **⏰ 高度なスケジューリング** - 自動検出されたシステムタイムゾーンと時間形式の設定
+- **📈 コスト分析** - キャッシュトークン計算を含むモデル固有の価格設定
+- **🔧 Pydantic検証** - 自動検証によるタイプセーフな設定
+- **📝 包括的なロギング** - 設定可能なレベルでのオプションのファイルロギング
+- **🧪 広範なテスト** - 完全なカバレッジを持つ100以上のテストケース
+- **🎯 エラー報告** - 本番監視用のオプションのSentry統合
+- **⚡ パフォーマンス最適化** - 高度なキャッシュと効率的なデータ処理
+
+### 📋 デフォルトのカスタムプラン
+
+**カスタムプラン**は、5時間のClaude Codeセッション用に特別に設計されたデフォルトオプションです。次の3つの重要なメトリックを監視します。
+- **トークン使用量** - トークン消費量を追跡
+- **メッセージ使用量** - メッセージ数を監視
+- **コスト使用量** - 長時間のセッションで最も重要なメトリック
+
+カスタムプランは、過去192時間 (8日間) のすべてのセッションを分析し、実際の使用量に基づいてパーソナライズされた制限を計算することで、使用パターンに自動的に適応します。これにより、特定のワークフローに合わせた正確な予測と警告が保証されます。
+
+
+## 🚀 インストール
+### ⚡ uv を使用した最新のインストール (推奨)
+
+**uv が最適な選択である理由:**
+- ✅ 自動的に隔離された環境を作成 (システムとの競合なし)
+- ✅ Pythonのバージョン問題なし
+- ✅ 「externally-managed-environment」エラーなし
+- ✅ 簡単な更新とアンインストール
+- ✅ すべてのプラットフォームで動作
+
+モニターをインストールして使用する最も速く簡単な方法:
 
 [![PyPI](https://img.shields.io/pypi/v/claude-monitor.svg)](https://pypi.org/project/claude-monitor/)
 
-#### Install from PyPI
+#### PyPIからのインストール
 
 ```bash
-# Install directly from PyPI with uv (easiest)
+# uv を使用して PyPI から直接インストール (最も簡単)
 uv tool install claude-monitor
 
-# Run from anywhere
-claude-monitor  # or cmonitor, ccmonitor for short
+# どこからでも実行
+claude-monitor  # または cmonitor, ccmonitor (短縮形)
 ```
 
 
-#### Install from Source
+#### ソースからのインストール
 
 ```bash
-# Clone and install from source
+# ソースからクローンしてインストール
 git clone https://github.com/Maciek-roboblog/Claude-Code-Usage-Monitor.git
 cd Claude-Code-Usage-Monitor
 uv tool install .
 
-# Run from anywhere
+# どこからでも実行
 claude-monitor
 ```
 
 
-#### First-time uv users
-If you don't have uv installed yet, get it with one command:
+#### 初めての uv ユーザー向け
+
+まだ uv がインストールされていない場合は、次のコマンドで入手できます。
 
 ```bash
-# On Linux/macOS:
+# Linux/macOSの場合:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# On Windows:
+# Windowsの場合:
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 
-# After installation, restart your terminal
+# インストール後、ターミナルを再起動してください
 ```
 
 
-### 📦 Installation with pip
+### 📦 pip を使用したインストール
 
 ```bash
-# Install from PyPI
+# PyPI からインストール
 pip install claude-monitor
 
-# If claude-monitor command is not found, add ~/.local/bin to PATH:
+# claude-monitor コマンドが見つからない場合は、~/.local/bin を PATH に追加します:
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc  # or restart your terminal
+source ~/.bashrc  # またはターミナルを再起動
 
-# Run from anywhere
-claude-monitor  # or cmonitor, ccmonitor for short
+# どこからでも実行
+claude-monitor  # または cmonitor, ccmonitor (短縮形)
 ```
 
 
 >
-> **⚠️ PATH Setup**: If you see WARNING: The script claude-monitor is installed in '/home/username/.local/bin' which is not on PATH, follow the export PATH command above.
+> **⚠️ PATH 設定**: WARNING: The script claude-monitor is installed in '/home/username/.local/bin' which is not on PATH と表示された場合は、上記の export PATH コマンドに従ってください。
 >
-> **⚠️ Important**: On modern Linux distributions (Ubuntu 23.04+, Debian 12+, Fedora 38+), you may encounter an "externally-managed-environment" error. Instead of using --break-system-packages, we strongly recommend:
-> 1. **Use uv instead** (see above) - it's safer and easier
-> 2. **Use a virtual environment** - python3 -m venv myenv && source myenv/bin/activate
-> 3. **Use pipx** - pipx install claude-monitor
+> **⚠️ 重要**: 最新のLinuxディストリビューション (Ubuntu 23.04+, Debian 12+, Fedora 38+) では、「externally-managed-environment」エラーが発生する場合があります。--break-system-packages を使用する代わりに、次のことを強くお勧めします。
+> 1. **uv を使用する** (上記参照) - より安全で簡単です
+> 2. **仮想環境を使用する** - python3 -m venv myenv && source myenv/bin/activate
+> 3. **pipx を使用する** - pipx install claude-monitor
 >
-> See the Troubleshooting section for detailed solutions.
+> 詳細な解決策については、トラブルシューティングセクションを参照してください。
 
-### 🛠️ Other Package Managers
+### 🛠️ その他のパッケージマネージャー
 
-#### pipx (Isolated Environments)
+#### pipx (隔離された環境)
 ```bash
-# Install with pipx
+# pipx でインストール
 pipx install claude-monitor
 
-# Run from anywhere
-claude-monitor  # or claude-code-monitor, cmonitor, ccmonitor, ccm for short
+# どこからでも実行
+claude-monitor  # または claude-code-monitor, cmonitor, ccmonitor, ccm (短縮形)
 ```
 
 
 #### conda/mamba
 ```bash
-# Install with pip in conda environment
+# conda 環境で pip を使用してインストール
 pip install claude-monitor
 
-# Run from anywhere
-claude-monitor  # or cmonitor, ccmonitor for short
+# どこからでも実行
+claude-monitor  # または cmonitor, ccmonitor (短縮形)
 ```
 
 
-## 📖 Usage
+## 📖 使用方法
 
-### Get Help
+### ヘルプの表示
 
 ```bash
-# Show help information
+# ヘルプ情報を表示
 claude-monitor --help
 ```
 
-#### Available Command-Line Parameters
+#### 利用可能なコマンドラインパラメータ
 
-| Parameter | Type | Default | Description |
+| パラメータ | タイプ | デフォルト | 説明 |
 |-----------|------|---------|-------------|
-| --plan | string | custom | Plan type: pro, max5, max20, or custom |
-| --custom-limit-tokens | int | None | Token limit for custom plan (must be > 0) |
-| --view | string | realtime | View type: realtime, daily, or monthly |
-| --timezone | string | auto | Timezone (auto-detected). Examples: UTC, America/New_York, Europe/London |
-| --time-format | string | auto | Time format: 12h, 24h, or auto |
-| --theme | string | auto | Display theme: light, dark, classic, or auto |
-| --refresh-rate | int | 10 | Data refresh rate in seconds (1-60) |
-| --refresh-per-second | float | 0.75 | Display refresh rate in Hz (0.1-20.0) |
-| --reset-hour | int | None | Daily reset hour (0-23) |
-| --log-level | string | INFO | Logging level: DEBUG, INFO, WARNING, ERROR, CRITICAL |
-| --log-file | path | None | Log file path |
-| --debug | flag | False | Enable debug logging |
-| --version, -v | flag | False | Show version information |
-| --clear | flag | False | Clear saved configuration |
+| --plan | string | custom | プランタイプ: pro, max5, max20, または custom |
+| --custom-limit-tokens | int | None | カスタムプランのトークン制限 (0より大きい必要があります) |
+| --view | string | realtime | 表示タイプ: realtime, daily, または monthly |
+| --timezone | string | auto | タイムゾーン (自動検出)。例: UTC, America/New_York, Europe/London |
+| --time-format | string | auto | 時間形式: 12h, 24h, または auto |
+| --theme | string | auto | 表示テーマ: light, dark, classic, または auto |
+| --refresh-rate | int | 10 | データリフレッシュレート (秒単位) (1-60) |
+| --refresh-per-second | float | 0.75 | ディスプレイリフレッシュレート (Hz) (0.1-20.0) |
+| --reset-hour | int | None | 毎日のリセット時間 (0-23) |
+| --log-level | string | INFO | ロギングレベル: DEBUG, INFO, WARNING, ERROR, CRITICAL |
+| --log-file | path | None | ログファイルのパス |
+| --debug | flag | False | デバッグロギングを有効にする |
+| --version, -v | flag | False | バージョン情報を表示 |
+| --clear | flag | False | 保存された設定をクリア |
 
-#### Plan Options
+#### プランオプション
 
-| Plan | Token Limit | Cost Limit       | Description |
+| プラン | トークン制限 | コスト制限 | 説明 |
 |------|-------------|------------------|-------------|
-| pro | 19,000 | $18.00           | Claude Pro subscription |
-| max5 | 88,000 | $35.00           | Claude Max5 subscription |
-| max20 | 220,000 | $140.00          | Claude Max20 subscription |
-| custom | P90-based | (default) $50.00 | Auto-detection with ML analysis |
+| pro | 19,000 | $18.00 | Claude Pro サブスクリプション |
+| max5 | 88,000 | $35.00 | Claude Max5 サブスクリプション |
+| max20 | 220,000 | $140.00 | Claude Max20 サブスクリプション |
+| custom | P90ベース | (デフォルト) $50.00 | ML分析による自動検出 |
 
-#### Command Aliases
+#### コマンドエイリアス
 
-The tool can be invoked using any of these commands:
-- claude-monitor (primary)
-- claude-code-monitor (full name)
-- cmonitor (short)
-- ccmonitor (short alternative)
-- ccm (shortest)
+このツールは、次のいずれかのコマンドを使用して呼び出すことができます。
+- claude-monitor (プライマリ)
+- claude-code-monitor (フルネーム)
+- cmonitor (短縮形)
+- ccmonitor (短縮形の代替)
+- ccm (最短)
 
-#### Save Flags Feature
+#### フラグ保存機能
 
-The monitor automatically saves your preferences to avoid re-specifying them on each run:
+モニターは、毎回指定する必要がないように、設定を自動的に保存します。
 
-**What Gets Saved:**
-- View type (--view)
-- Theme preferences (--theme)
-- Timezone settings (--timezone)
-- Time format (--time-format)
-- Refresh rates (--refresh-rate, --refresh-per-second)
-- Reset hour (--reset-hour)
-- Custom token limits (--custom-limit-tokens)
+**保存されるもの:**
+- 表示タイプ (--view)
+- テーマ設定 (--theme)
+- タイムゾーン設定 (--timezone)
+- 時間形式 (--time-format)
+- リフレッシュレート (--refresh-rate, --refresh-per-second)
+- リセット時間 (--reset-hour)
+- カスタムトークン制限 (--custom-limit-tokens)
 
-**Configuration Location:** ~/.claude-monitor/last_used.json
+**設定の場所:** ~/.claude-monitor/last_used.json
 
-**Usage Examples:**
+**使用例:**
 ```bash
-# First run - specify preferences
+# 初回実行 - 設定を指定
 claude-monitor --plan pro --theme dark --timezone "America/New_York"
 
-# Subsequent runs - preferences automatically restored
+# 以降の実行 - 設定は自動的に復元されます
 claude-monitor --plan pro
 
-# Override saved settings for this session
+# このセッションの保存された設定を上書き
 claude-monitor --plan pro --theme light
 
-# Clear all saved preferences
+# 保存されたすべての設定をクリア
 claude-monitor --clear
 ```
 
-**Key Features:**
-- ✅ Automatic parameter persistence between sessions
-- ✅ CLI arguments always override saved settings
-- ✅ Atomic file operations prevent corruption
-- ✅ Graceful fallback if config files are damaged
-- ✅ Plan parameter never saved (must specify each time)
+**主な機能:**
+- ✅ セッション間でパラメータが自動的に永続化されます
+- ✅ CLI引数は常に保存された設定を上書きします
+- ✅ アトミックなファイル操作により破損を防ぎます
+- ✅ 設定ファイルが破損した場合でも正常にフォールバックします
+- ✅ プランパラメータは保存されません (毎回指定する必要があります)
 
-### Basic Usage
+### 基本的な使用方法
 
-#### With uv tool installation (Recommended)
+#### uv ツールインストールの場合 (推奨)
 ```bash
-# Default (Custom plan with auto-detection)
+# デフォルト (自動検出付きカスタムプラン)
 claude-monitor
 
-# Alternative commands
-claude-code-monitor  # Full descriptive name
-cmonitor             # Short alias
-ccmonitor            # Short alternative
-ccm                  # Shortest alias
+# 代替コマンド
+claude-code-monitor  # 完全な説明名
+cmonitor             # 短縮エイリアス
+ccmonitor            # 短縮代替
+ccm                  # 最短エイリアス
 
-# Exit the monitor
-# Press Ctrl+C to gracefully exit
+# モニターを終了
+# Ctrl+C を押して正常に終了します
 ```
 
-#### Development mode
-If running from source, use python -m claude_monitor from the src/ directory.
+#### 開発モード
 
-### Configuration Options
+ソースから実行する場合は、src/ ディレクトリから python -m claude_monitor を使用します。
 
-#### Specify Your Plan
+### 設定オプション
+
+#### プランの指定
 
 ```bash
-# Custom plan with P90 auto-detection (Default)
+# P90自動検出付きカスタムプラン (デフォルト)
 claude-monitor --plan custom
 
-# Pro plan (~44,000 tokens)
+# Pro プラン (~44,000 トークン)
 claude-monitor --plan pro
 
-# Max5 plan (~88,000 tokens)
+# Max5 プラン (~88,000 トークン)
 claude-monitor --plan max5
 
-# Max20 plan (~220,000 tokens)
+# Max20 プラン (~220,000 トークン)
 claude-monitor --plan max20
 
-# Custom plan with explicit token limit
+# 明示的なトークン制限付きカスタムプラン
 claude-monitor --plan custom --custom-limit-tokens 100000
 ```
 
-#### Custom Reset Times
+#### カスタムリセット時間
 
 ```bash
-# Reset at 3 AM
+# 午前3時にリセット
 claude-monitor --reset-hour 3
 
-# Reset at 10 PM
+# 午後10時にリセット
 claude-monitor --reset-hour 22
 ```
 
-#### Usage View Configuration
+#### 使用状況表示の設定
 
 ```bash
-# Real-time monitoring with live updates (Default)
+# ライブアップデート付きリアルタイム監視 (デフォルト)
 claude-monitor --view realtime
 
-# Daily token usage aggregated in table format
+# テーブル形式で集計された毎日のトークン使用量
 claude-monitor --view daily
 
-# Monthly token usage aggregated in table format
+# テーブル形式で集計された毎月のトークン使用量
 claude-monitor --view monthly
 
 ```
 
-#### Performance and Display Configuration
+#### パフォーマンスと表示の設定
 
 ```bash
-# Adjust refresh rate (1-60 seconds, default: 10)
+# リフレッシュレートの調整 (1-60秒、デフォルト: 10)
 claude-monitor --refresh-rate 5
 
-# Adjust display refresh rate (0.1-20 Hz, default: 0.75)
+# ディスプレイリフレッシュレートの調整 (0.1-20 Hz、デフォルト: 0.75)
 claude-monitor --refresh-per-second 1.0
 
-# Set time format (auto-detected by default)
-claude-monitor --time-format 24h  # or 12h
+# 時間形式の設定 (デフォルトで自動検出)
+claude-monitor --time-format 24h  # または 12h
 
-# Force specific theme
+# 特定のテーマを強制
 claude-monitor --theme dark  # light, dark, classic, auto
 
-# Clear saved configuration
+# 保存された設定をクリア
 claude-monitor --clear
 ```
 
-#### Timezone Configuration
+#### タイムゾーン設定
 
-The default timezone is **auto-detected from your system**. Override with any valid timezone:
+デフォルトのタイムゾーンは**システムから自動検出されます**。任意の有効なタイムゾーンで上書きできます。
 
 ```bash
-# Use US Eastern Time
+# 米国東部時間を使用
 claude-monitor --timezone America/New_York
 
-# Use Tokyo time
+# 東京時間を使用
 claude-monitor --timezone Asia/Tokyo
 
-# Use UTC
+# UTC を使用
 claude-monitor --timezone UTC
 
-# Use London time
+# ロンドン時間を使用
 claude-monitor --timezone Europe/London
 ```
 
-#### Logging and Debugging
+#### ロギングとデバッグ
 
 ```bash
-# Enable debug logging
+# デバッグロギングを有効にする
 claude-monitor --debug
 
-# Log to file
+# ファイルにログを記録
 claude-monitor --log-file ~/.claude-monitor/logs/monitor.log
 
-# Set log level
+# ログレベルを設定
 claude-monitor --log-level WARNING  # DEBUG, INFO, WARNING, ERROR, CRITICAL
 ```
 
-### Available Plans
+### 利用可能なプラン
 
-| Plan | Token Limit     | Best For |
+| プラン | トークン制限 | 最適な用途 |
 |------|-----------------|----------|
-| **custom** | P90 auto-detect | Intelligent limit detection (default) |
-| **pro** | ~19,000         | Claude Pro subscription |
-| **max5** | ~88,000         | Claude Max5 subscription |
-| **max20** | ~220,000        | Claude Max20 subscription |
+| **custom** | P90自動検出 | インテリジェントな制限検出 (デフォルト) |
+| **pro** | ~19,000 | Claude Pro サブスクリプション |
+| **max5** | ~88,000 | Claude Max5 サブスクリプション |
+| **max20** | ~220,000 | Claude Max20 サブスクリプション |
 
-#### Advanced Plan Features
+#### 高度なプラン機能
 
-- **P90 Analysis**: Custom plan uses 90th percentile calculations from your usage history
-- **Cost Tracking**: Model-specific pricing with cache token calculations
-- **Limit Detection**: Intelligent threshold detection with 95% confidence
+- **P90分析**: 履歴使用量の90パーセンタイル分析
+- **コスト追跡**: キャッシュトークン計算を含むモデル固有の価格設定
+- **制限検出**: 95%の信頼度でインテリジェントなしきい値検出
+- **キャッシュサポート**: キャッシュ作成と読み取りトークンコストを含む
+- **モデル固有**: Claude 3.5、Claude 4、および将来のモデルに適応
+
+## 🚀 v3.0.0 の新機能
+
+### 主な変更点
+
+#### **完全なアーキテクチャの書き換え**
+- 単一責任の原則 (SRP) に準拠したモジュラー設計
+- Pydanticベースのタイプセーフな設定と検証
+- オプションのSentry統合による高度なエラー処理
+- 100以上のテストケースを含む包括的なテストスイート
+
+#### **機能強化**
+- **P90分析**: 90パーセンタイル計算を使用した機械学習ベースの制限検出
+- **更新されたプラン制限**: Pro (44k), Max5 (88k), Max20 (220k) トークン
+- **コスト分析**: キャッシュトークン計算を含むモデル固有の価格設定
+- **リッチUI**: 自動ターミナル背景検出機能を備えたWCAG準拠のテーマ
+
+#### **新しいCLIオプション**
+- --refresh-per-second: 設定可能なディスプレイリフレッシュレート (0.1-20 Hz)
+- --time-format: 自動12時間/24時間形式検出
+- --custom-limit-tokens: カスタムプランの明示的なトークン制限
+- --log-file および --log-level: 高度なロギング機能
+- --clear: 保存された設定をリセット
+- コマンドエイリアス: claude-code-monitor, cmonitor, ccmonitor, ccm (利便性のため)
+
+#### **破壊的変更**
+- パッケージ名が claude-usage-monitor から claude-monitor に変更されました
+- デフォルトプランが pro から custom (自動検出付き) に変更されました
+- 最小Pythonバージョンが3.9+に引き上げられました
+- コマンド構造が更新されました (上記の例を参照)
 
 
-## 🚀 What's New in v3.0.0
+## ✨ 機能と仕組み
 
-### Major Changes
+### v3.0.0 アーキテクチャの概要
 
-#### **Complete Architecture Rewrite**
-- Modular design with Single Responsibility Principle (SRP) compliance
-- Pydantic-based configuration with type safety and validation
-- Advanced error handling with optional Sentry integration
-- Comprehensive test suite with 100+ test cases
+新バージョンは、単一責任の原則 (SRP) に従ったモジュラーアーキテクチャで完全に書き直されています。
 
-#### **Enhanced Functionality**
-- **P90 Analysis**: Machine learning-based limit detection using 90th percentile calculations
-- **Updated Plan Limits**: Pro (44k), Max5 (88k), Max20 (220k) tokens
-- **Cost Analytics**: Model-specific pricing with cache token calculations
-- **Rich UI**: WCAG-compliant themes with automatic terminal background detection
+### 🖥️ ユーザーインターフェース層
 
-#### **New CLI Options**
-- --refresh-per-second: Configurable display refresh rate (0.1-20 Hz)
-- --time-format: Automatic 12h/24h format detection
-- --custom-limit-tokens: Explicit token limits for custom plans
-- --log-file and --log-level: Advanced logging capabilities
-- --clear: Reset saved configuration
-- Command aliases: claude-code-monitor, cmonitor, ccmonitor, ccm for convenience
-
-#### **Breaking Changes**
-- Package name changed from claude-usage-monitor to claude-monitor
-- Default plan changed from pro to custom (with auto-detection)
-- Minimum Python version increased to 3.9+
-- Command structure updated (see examples above)
-
-
-## ✨ Features & How It Works
-
-### v3.0.0 Architecture Overview
-
-The new version features a complete rewrite with modular architecture following Single Responsibility Principle (SRP):
-
-### 🖥️ User Interface Layer
-
-| Component            | Description           |
+| コンポーネント | 説明 |
 | -------------------- | --------------------- |
-| **CLI Module**       | Pydantic-based        |
-| **Settings/Config**  | Type-safe             |
-| **Error Handling**   | Sentry-ready          |
-| **Rich Terminal UI** | Adaptive Theme        |
+| **CLIモジュール** | Pydanticベース |
+| **設定/構成** | タイプセーフ |
+| **エラー処理** | Sentry対応 |
+| **リッチターミナルUI** | 適応型テーマ |
 
 ---
 
-### 🎛️ Monitoring Orchestrator
+### 🎛️ 監視オーケストレーター
 
-| Component                | Key Responsibilities                                             |
+| コンポーネント | 主な責任 |
 | ------------------------ | ---------------------------------------------------------------- |
-| **Central Control Hub**  | Session Mgmt · Real-time Data Flow · Component Coordination      |
-| **Data Manager**         | Cache Mgmt · File I/O · State Persist                           |
-| **Session Monitor**      | Real-time · 5 hr Windows · Token Track                           |
-| **UI Controller**        | Rich Display · Progress Bars · Theme System                     |
-| **Analytics**            | P90 Calculator · Burn Rate · Predictions                        |
+| **中央制御ハブ** | セッション管理 · リアルタイムデータフロー · コンポーネント連携 |
+| **データマネージャー** | キャッシュ管理 · ファイルI/O · 状態永続化 |
+| **セッションモニター** | リアルタイム · 5時間ウィンドウ · トークン追跡 |
+| **UIコントローラー** | リッチディスプレイ · プログレスバー · テーマシステム |
+| **分析** | P90計算 · バーンレート · 予測 |
 
 ---
 
-### 🏗️ Foundation Layer
+### 🏗️ 基盤層
 
-| Component           | Core Features                                           |
+| コンポーネント | コア機能 |
 | ------------------- | ------------------------------------------------------- |
-| **Core Models**     | Session Data · Config Schema · Type Safety             |
-| **Analysis Engine** | ML Algorithms · Statistical · Forecasting              |
-| **Terminal Themes** | Auto-detection · WCAG Colors · Contrast Opt            |
-| **Claude API Data** | Token Tracking · Cost Calculator · Session Blocks      |
+| **コアモデル** | セッションデータ · 設定スキーマ · タイプセーフ |
+| **分析エンジン** | MLアルゴリズム · 統計 · 予測 |
+| **ターミナルテーマ** | 自動検出 · WCAGカラー · コントラスト最適化 |
+| **Claude APIデータ** | トークン追跡 · コスト計算 · セッションブロック |
 
 ---
 
-**🔄 Data Flow:**
-Claude Config Files → Data Layer → Analysis Engine → UI Components → Terminal Display
+**🔄 データフロー:**
+Claude 設定ファイル → データ層 → 分析エンジン → UIコンポーネント → ターミナル表示
 
 
-### Current Features
+### 現在の機能
 
-#### 🔄 Advanced Real-time Monitoring
-- Configurable update intervals (1-60 seconds)
-- High-precision display refresh (0.1-20 Hz)
-- Intelligent change detection to minimize CPU usage
-- Multi-threaded orchestration with callback system
+#### 🔄 高度なリアルタイム監視
+- 設定可能な更新間隔 (1-60秒)
+- 高精度ディスプレイリフレッシュ (0.1-20 Hz)
+- CPU使用量を最小限に抑えるインテリジェントな変更検出
+- コールバックシステムによるマルチスレッドオーケストレーション
 
-#### 📊 Rich UI Components
-- **Progress Bars**: WCAG-compliant color schemes with scientific contrast ratios
-- **Data Tables**: Sortable columns with model-specific statistics
-- **Layout Manager**: Responsive design that adapts to terminal size
-- **Theme System**: Auto-detects terminal background for optimal readability
+#### 📊 リッチUIコンポーネント
+- **プログレスバー**: 科学的なコントラスト比を持つWCAG準拠の配色
+- **データテーブル**: モデル固有の統計情報を含むソート可能な列
+- **レイアウトマネージャー**: ターミナルサイズに適応するレスポンシブデザイン
+- **テーマシステム**: 最適な読みやすさのためにターミナル背景を自動検出
 
-#### 📈 Multiple Usage Views
-- **Realtime View** (Default): Live monitoring with progress bars, current session data, and burn rate analysis
-- **Daily View**: Aggregated daily statistics showing Date, Models, Input/Output/Cache tokens, Total tokens, and Cost
-- **Monthly View**: Monthly aggregated data for long-term trend analysis and budget planning
+#### 📈 複数の使用状況表示
+- **リアルタイム表示** (デフォルト): プログレスバー、現在のセッションデータ、バーンレート分析によるライブ監視
+- **日次表示**: 日付、モデル、入力/出力/キャッシュトークン、合計トークン、コストを表示する集計された日次統計
+- **月次表示**: 長期的なトレンド分析と予算計画のための月次集計データ
 
-#### 🔮 Machine Learning Predictions
-- **P90 Calculator**: 90th percentile analysis for intelligent limit detection
-- **Burn Rate Analytics**: Multi-session consumption pattern analysis
-- **Cost Projections**: Model-specific pricing with cache token calculations
-- **Session Forecasting**: Predicts when sessions will expire based on usage patterns
+#### 🔮 機械学習予測
+- **P90計算**: インテリジェントな制限検出のための90パーセンタイル分析
+- **バーンレート分析**: マルチセッション消費パターン分析
+- **コスト予測**: キャッシュトークン計算を含むモデル固有の価格設定
+- **セッション予測**: 使用パターンに基づいてセッションがいつ期限切れになるかを予測
 
-#### 🤖 Intelligent Auto-Detection
-- **Background Detection**: Automatically determines terminal theme (light/dark)
-- **System Integration**: Auto-detects timezone and time format preferences
-- **Plan Recognition**: Analyzes usage patterns to suggest optimal plans
-- **Limit Discovery**: Scans historical data to find actual token limits
+#### 🤖 インテリジェントな自動検出
+- **背景検出**: ターミナルテーマ (ライト/ダーク) を自動的に決定
+- **システム統合**: タイムゾーンと時間形式の設定を自動検出
+- **プラン認識**: 最適なプランを提案するために使用パターンを分析
+- **制限検出**: 実際のトークン制限を見つけるために履歴データをスキャン
 
-### Understanding Claude Sessions
+### Claude セッションの理解
 
-#### How Claude Code Sessions Work
+#### Claude Code セッションの仕組み
 
-Claude Code operates on a **5-hour rolling session window system**:
+Claude Code は**5時間ローリングセッションウィンドウシステム**で動作します。
 
-1. **Session Start**: Begins with your first message to Claude
-2. **Session Duration**: Lasts exactly 5 hours from that first message
-3. **Token Limits**: Apply within each 5-hour session window
-4. **Multiple Sessions**: Can have several active sessions simultaneously
-5. **Rolling Windows**: New sessions can start while others are still active
+1. **セッション開始**: Claude への最初のメッセージで開始
+2. **セッション期間**: 最初のメッセージから正確に5時間継続
+3. **トークン制限**: 各5時間セッションウィンドウ内で適用
+4. **複数セッション**: 複数のアクティブなセッションを同時に持つことができます
+5. **ローリングウィンドウ**: 他のセッションがアクティブな間でも新しいセッションを開始できます
 
-#### Session Reset Schedule
+#### セッションリセットスケジュール
 
-**Example Session Timeline:**
-10:30 AM - First message (Session A starts at 10 AM)
-03:00 PM - Session A expires (5 hours later)
+**セッションタイムラインの例:**
+午前10時30分 - 最初のメッセージ (セッションAは午前10時に開始)
+午後3時00分 - セッションAが期限切れ (5時間後)
 
-12:15 PM - First message (Session B starts 12PM)
-05:15 PM - Session B expires (5 hours later 5PM)
+午後12時15分 - 最初のメッセージ (セッションBは午後12時に開始)
+午後5時15分 - セッションBが期限切れ (5時間後午後5時)
 
 
-#### Burn Rate Calculation
+#### バーンレート計算
 
-The monitor calculates burn rate using sophisticated analysis:
+モニターは、洗練された分析を使用してバーンレートを計算します。
 
-1. **Data Collection**: Gathers token usage from all sessions in the last hour
-2. **Pattern Analysis**: Identifies consumption trends across overlapping sessions
-3. **Velocity Tracking**: Calculates tokens consumed per minute
-4. **Prediction Engine**: Estimates when current session tokens will deplete
-5. **Real-time Updates**: Adjusts predictions as usage patterns change
+1. **データ収集**: 過去1時間のすべてのセッションからトークン使用量を収集
+2. **パターン分析**: 重複するセッション全体の消費トレンドを特定
+3. **速度追跡**: 1分あたりの消費トークン数を計算
+4. **予測エンジン**: 現在のセッションのトークンがいつ枯渇するかを推定
+5. **リアルタイム更新**: 使用パターンが変化するにつれて予測を調整
 
-### Token Limits by Plan
+### プランごとのトークン制限
 
-#### v3.0.0 Updated Plan Limits
+#### v3.0.0 更新されたプラン制限
 
-| Plan | Limit (Tokens) | Cost Limit       | Messages | Algorithm |
+| プラン | 制限 (トークン) | コスト制限 | メッセージ | アルゴリズム |
 |------|----------------|------------------|----------|-----------|
-| **Claude Pro** | 19,000         | $18.00           | 250 | Fixed limit |
-| **Claude Max5** | 88,000         | $35.00           | 1,000 | Fixed limit |
-| **Claude Max20** | 220,000        | $140.00          | 2,000 | Fixed limit |
-| **Custom** | P90-based      | (default) $50.00 | 250+ | Machine learning |
+| **Claude Pro** | 19,000 | $18.00 | 250 | 固定制限 |
+| **Claude Max5** | 88,000 | $35.00 | 1,000 | 固定制限 |
+| **Claude Max20** | 220,000 | $140.00 | 2,000 | 固定制限 |
+| **Custom** | P90ベース | (デフォルト) $50.00 | 250+ | 機械学習 |
 
-#### Advanced Limit Detection
+#### 高度な制限検出
 
-- **P90 Analysis**: Uses 90th percentile of your historical usage
-- **Confidence Threshold**: 95% accuracy in limit detection
-- **Cache Support**: Includes cache creation and read token costs
-- **Model-Specific**: Adapts to Claude 3.5, Claude 4, and future models
+- **P90分析**: 履歴使用量の90パーセンタイルを使用
+- **信頼度しきい値**: 制限検出の95%の精度
+- **キャッシュサポート**: キャッシュ作成と読み取りトークンコストを含む
+- **モデル固有**: Claude 3.5、Claude 4、および将来のモデルに適応
 
-### Technical Requirements
+### 技術要件
 
-#### Dependencies (v3.0.0)
+#### 依存関係 (v3.0.0)
 
 ```toml
-# Core dependencies (automatically installed)
-pytz>=2023.3                # Timezone handling
-rich>=13.7.0                # Rich terminal UI
-pydantic>=2.0.0             # Type validation
-pydantic-settings>=2.0.0    # Configuration management
-numpy>=1.21.0               # Statistical calculations
-sentry-sdk>=1.40.0          # Error reporting (optional)
-pyyaml>=6.0                 # Configuration files
-tzdata                      # Windows timezone data
+# コア依存関係 (自動的にインストールされます)
+pytz>=2023.3                # タイムゾーン処理
+rich>=13.7.0                # リッチターミナルUI
+pydantic>=2.0.0             # タイプ検証
+pydantic-settings>=2.0.0    # 設定管理
+numpy>=1.21.0               # 統計計算
+sentry-sdk>=1.40.0          # エラー報告 (オプション)
+pyyaml>=6.0                 # 設定ファイル
+tzdata                      # Windows タイムゾーンデータ
 ```
 
-#### Python Requirements
+#### Python要件
 
-- **Minimum**: Python 3.9+
-- **Recommended**: Python 3.11+
-- **Tested on**: Python 3.9, 3.10, 3.11, 3.12, 3.13
+- **最小**: Python 3.9+
+- **推奨**: Python 3.11+
+- **テスト済み**: Python 3.9, 3.10, 3.11, 3.12, 3.13
 
-### Smart Detection Features
+### スマート検出機能
 
-#### Automatic Plan Switching
+#### 自動プラン切り替え
 
-When using the default Pro plan:
+デフォルトのProプランを使用している場合:
 
-1. **Detection**: Monitor notices token usage exceeding 7,000
-2. **Analysis**: Scans previous sessions for actual limits
-3. **Switch**: Automatically changes to custom_max mode
-4. **Notification**: Displays clear message about the change
-5. **Continuation**: Keeps monitoring with new, higher limit
+1. **検出**: モニターがトークン使用量が7,000を超えることを検出
+2. **分析**: 以前のセッションで実際の制限をスキャン
+3. **切り替え**: 自動的に custom_max モードに切り替え
+4. **通知**: 変更に関する明確なメッセージを表示
+5. **継続**: 新しい、より高い制限で監視を継続
 
-#### Limit Discovery Process
+#### 制限検出プロセス
 
-The auto-detection system:
+自動検出システム:
 
-1. **Scans History**: Examines all available session blocks
-2. **Finds Peaks**: Identifies highest token usage achieved
-3. **Validates Data**: Ensures data quality and recency
-4. **Sets Limits**: Uses discovered maximum as new limit
-5. **Learns Patterns**: Adapts to your actual usage capabilities
+1. **履歴をスキャン**: 利用可能なすべてのセッションブロックを検査
+2. **ピークを検出**: 達成された最高のトークン使用量を特定
+3. **データを検証**: データ品質と鮮度を保証
+4. **制限を設定**: 検出された最大値を新しい制限として使用
+5. **パターンを学習**: 実際の使用能力に適応
 
+## 🚀 使用例
 
-## 🚀 Usage Examples
+### 一般的なシナリオ
 
-### Common Scenarios
-
-#### 🌅 Morning Developer
-**Scenario**: You start work at 9 AM and want tokens to reset aligned with your schedule.
+#### 🌅 朝型開発者
+**シナリオ**: 午前9時に作業を開始し、トークンをスケジュールに合わせてリセットしたい。
 
 ```bash
-# Set custom reset time to 9 AM
+# カスタムリセット時間を午前9時に設定
 ./claude_monitor.py --reset-hour 9
 
-# With your timezone
+# タイムゾーンを指定
 ./claude_monitor.py --reset-hour 9 --timezone US/Eastern
 ```
 
 
-**Benefits**:
-- Reset times align with your work schedule
-- Better planning for daily token allocation
-- Predictable session windows
+**利点**:
+- リセット時間が作業スケジュールと一致
+- 毎日のトークン割り当ての計画が容易に
+- 予測可能なセッションウィンドウ
 
-#### 🌙 Night Owl Coder
-**Scenario**: You often work past midnight and need flexible reset scheduling.
+#### 🌙 夜型コーダー
+**シナリオ**: 真夜中を過ぎて作業することが多く、柔軟なリセットスケジュールが必要。
 
 ```bash
-# Reset at midnight for clean daily boundaries
+# 毎日の境界を明確にするために真夜中にリセット
 ./claude_monitor.py --reset-hour 0
 
-# Late evening reset (11 PM)
+# 深夜のリセット (午後11時)
 ./claude_monitor.py --reset-hour 23
 ```
 
 
-**Strategy**:
-- Plan heavy coding sessions around reset times
-- Use late resets to span midnight work sessions
-- Monitor burn rate during peak hours
+**戦略**:
+- リセット時間に合わせて大量のコーディングセッションを計画
+- 深夜の作業セッションをまたぐために遅いリセットを使用
+- ピーク時のバーンレートを監視
 
-#### 🔄 Heavy User with Variable Limits
-**Scenario**: Your token limits seem to change, and you're not sure of your exact plan.
+#### 🔄 変動する制限を持つヘビーユーザー
+**シナリオ**: トークン制限が変更されるようで、正確なプランがわからない。
 
 ```bash
-# Auto-detect your highest previous usage
+# 以前の最高使用量を自動検出
 claude-monitor --plan custom_max
 
-# Monitor with custom scheduling
+# カスタムスケジューリングで監視
 claude-monitor --plan custom_max --reset-hour 6
 ```
 
 
-**Approach**:
-- Let auto-detection find your real limits
-- Monitor for a week to understand patterns
-- Note when limits change or reset
+**アプローチ**:
+- 自動検出に実際の制限を見つけさせる
+- パターンを理解するために1週間監視
+- 制限が変更またはリセットされたときにメモする
 
-#### 🌍 International User
-**Scenario**: You're working across different timezones or traveling.
+#### 🌍 国際的なユーザー
+**シナリオ**: 異なるタイムゾーンで作業している、または旅行中。
 
 ```bash
-# US East Coast
+# 米国東海岸
 claude-monitor --timezone America/New_York
 
-# Europe
+# ヨーロッパ
 claude-monitor --timezone Europe/London
 
-# Asia Pacific
+# アジア太平洋
 claude-monitor --timezone Asia/Singapore
 
-# UTC for international team coordination
+# 国際チーム連携のためのUTC
 claude-monitor --timezone UTC --reset-hour 12
 ```
 
 
-#### ⚡ Quick Check
-**Scenario**: You just want to see current status without configuration.
+#### ⚡ クイックチェック
+**シナリオ**: 設定なしで現在のステータスを確認したいだけ。
 
 ```bash
-# Just run it with defaults
+# デフォルトで実行
 claude-monitor
 
-# Press Ctrl+C after checking status
+# ステータス確認後、Ctrl+C を押して終了
 ```
 
-#### 📊 Usage Analysis Views
-**Scenario**: Analyzing your token usage patterns over different time periods.
+#### 📊 使用状況分析ビュー
+**シナリオ**: さまざまな期間でのトークン使用パターンを分析する。
 
 ```bash
-# View daily usage breakdown with detailed statistics
+# 詳細な統計情報を含む日次使用状況の内訳を表示
 claude-monitor --view daily
 
-# Analyze monthly token consumption trends
+# 月次トークン消費トレンドを分析
 claude-monitor --view monthly --plan max20
 
-# Export daily usage data to log file for analysis
+# 分析のために日次使用状況データをログファイルにエクスポート
 claude-monitor --view daily --log-file ~/daily-usage.log
 
-# Review usage in different timezone
+# 異なるタイムゾーンで使用状況を確認
 claude-monitor --view daily --timezone America/New_York
 ```
 
-**Use Cases**:
-- **Realtime**: Live monitoring of current session and burn rate
-- **Daily**: Analyze daily consumption patterns and identify peak usage days
-- **Monthly**: Long-term trend analysis and monthly budget planning
+**ユースケース**:
+- **リアルタイム**: 現在のセッションとバーンレートのライブ監視
+- **日次**: 日次消費パターンを分析し、ピーク使用日を特定
+- **月次**: 長期的なトレンド分析と月次予算計画
 
+### プラン選択戦略
 
-### Plan Selection Strategies
+#### プランの選択方法
 
-#### How to Choose Your Plan
-
-**Start with Default (Recommended for New Users)**
+**デフォルトから開始 (新規ユーザーに推奨)**
 ```bash
-# Pro plan detection with auto-switching
+# 自動切り替え付きProプラン検出
 claude-monitor
 ```
 
-- Monitor will detect if you exceed Pro limits
-- Automatically switches to custom_max if needed
-- Shows notification when switching occurs
+- モニターはPro制限を超えたかどうかを検出します
+- 必要に応じて自動的に custom_max に切り替えます
+- 切り替え時に通知を表示します
 
-**Known Subscription Users**
+**既知のサブスクリプションユーザー**
 ```bash
-# If you know you have Max5
+# Max5 を持っていることがわかっている場合
 claude-monitor --plan max5
 
-# If you know you have Max20
+# Max20 を持っていることがわかっている場合
 claude-monitor --plan max20
 ```
 
 
-**Unknown Limits**
+**不明な制限**
 ```bash
-# Auto-detect from previous usage
+# 以前の使用状況から自動検出
 claude-monitor --plan custom_max
 ```
 
 
-### Best Practices
+### ベストプラクティス
 
-#### Setup Best Practices
+#### セットアップのベストプラクティス
 
-1. **Start Early in Sessions**
+1. **セッションの早い段階で開始**
 
 ```bash
-   # Begin monitoring when starting Claude work (uv installation)
+   # Claude 作業を開始するときに監視を開始 (uv インストール)
    claude-monitor
 
-   # Or development mode
+   # または開発モード
    ./claude_monitor.py
    ```
 
-   - Gives accurate session tracking from the start
-   - Better burn rate calculations
-   - Early warning for limit approaches
+   - 最初から正確なセッション追跡が可能
+   - バーンレート計算の精度向上
+   - 制限接近の早期警告
 
-2. **Use Modern Installation (Recommended)**
+2. **最新のインストールを使用 (推奨)**
 
 ```bash
-   # Easy installation and updates with uv
+   # uv で簡単にインストールと更新
    uv tool install claude-monitor
    claude-monitor --plan max5
    ```
 
-   - Clean system installation
-   - Easy updates and maintenance
-   - Available from anywhere
+   - クリーンなシステムインストール
+   - 簡単な更新とメンテナンス
+   - どこからでも利用可能
 
-3. **Custom Shell Alias (Legacy Setup)**
+3. **カスタムシェルエイリアス (レガシー設定)**
 
 ```bash
-   # Add to ~/.bashrc or ~/.zshrc (only for development setup)
+   # ~/.bashrc または ~/.zshrc に追加 (開発設定のみ)
    alias claude-monitor='cd ~/Claude-Code-Usage-Monitor && source venv/bin/activate && ./claude_monitor.py'
    ```
 
 
-#### Usage Best Practices
+#### 使用方法のベストプラクティス
 
-1. **Monitor Burn Rate Velocity**
-   - Watch for sudden spikes in token consumption
-   - Adjust coding intensity based on remaining time
-   - Plan big refactors around session resets
+1. **バーンレート速度の監視**
+   - トークン消費量の急激な増加に注意
+   - 残り時間に基づいてコーディング強度を調整
+   - セッションリセットに合わせて大規模なリファクタリングを計画
 
-2. **Strategic Session Planning**
+2. **戦略的なセッション計画**
 
 ```bash
-   # Plan heavy usage around reset times
+   # リセット時間に合わせて大量の使用を計画
    claude-monitor --reset-hour 9
    ```
 
-   - Schedule large tasks after resets
-   - Use lighter tasks when approaching limits
-   - Leverage multiple overlapping sessions
+   - リセット後に大規模なタスクをスケジュール
+   - 制限に近づいている場合は軽いタスクを使用
+   - 複数の重複するセッションを活用
 
-3. **Timezone Awareness**
+3. **タイムゾーンの認識**
 
 ```bash
-   # Always use your actual timezone
+   # 常に実際のタイムゾーンを使用
    claude-monitor --timezone Europe/Warsaw
    ```
 
-   - Accurate reset time predictions
-   - Better planning for work schedules
-   - Correct session expiration estimates
+   - 正確なリセット時間の予測
+   - 作業スケジュールの計画が容易に
+   - 正しいセッション期限切れの推定
 
-#### Optimization Tips
+#### 最適化のヒント
 
-1. **Terminal Setup**
-   - Use terminals with at least 80 character width
-   - Enable color support for better visual feedback (check COLORTERM environment variable)
-   - Consider dedicated terminal window for monitoring
-   - Use terminals with truecolor support for best theme experience
+1. **ターミナル設定**
+   - 幅が80文字以上のターミナルを使用
+   - 視覚的なフィードバックを向上させるために色サポートを有効にする (COLORTERM 環境変数をチェック)
+   - 監視専用のターミナルウィンドウを検討
+   - 最高のテーマ体験のためにトゥルーカラーサポートのあるターミナルを使用
 
-2. **Workflow Integration**
+2. **ワークフロー統合**
 
 ```bash
-   # Start monitoring with your development session (uv installation)
+   # 開発セッションで監視を開始 (uv インストール)
    tmux new-session -d -s claude-monitor 'claude-monitor'
 
-   # Or development mode
+   # または開発モード
    tmux new-session -d -s claude-monitor './claude_monitor.py'
 
-   # Check status anytime
+   # いつでもステータスを確認
    tmux attach -t claude-monitor
    ```
 
 
-3. **Multi-Session Strategy**
-   - Remember sessions last exactly 5 hours
-   - You can have multiple overlapping sessions
-   - Plan work across session boundaries
+3. **マルチセッション戦略**
+   - セッションは正確に5時間続くことを覚えておく
+   - 複数の重複するセッションを持つことができる
+   - セッション境界をまたいで作業を計画する
 
-#### Real-World Workflows
+#### 実世界のワークフロー
 
-**Large Project Development**
+**大規模プロジェクト開発**
 ```bash
-# Setup for sustained development
+# 持続的な開発のためのセットアップ
 claude-monitor --plan max20 --reset-hour 8 --timezone America/New_York
 ```
 
 
-**Daily Routine**:
-1. **8:00 AM**: Fresh tokens, start major features
-2. **10:00 AM**: Check burn rate, adjust intensity
-3. **12:00 PM**: Monitor for afternoon session planning
-4. **2:00 PM**: New session window, tackle complex problems
-5. **4:00 PM**: Light tasks, prepare for evening session
+**日課**:
+1. **午前8時**: 新しいトークン、主要な機能を開始
+2. **午前10時**: バーンレートを確認し、強度を調整
+3. **午後12時**: 午後のセッション計画のために監視
+4. **午後2時**: 新しいセッションウィンドウ、複雑な問題に取り組む
+5. **午後4時**: 軽いタスク、夜のセッションの準備
 
-**Learning & Experimentation**
+**学習と実験**
 ```bash
-# Flexible setup for learning
+# 学習のための柔軟なセットアップ
 claude-monitor --plan pro
 ```
 
 
-**Sprint Development**
+**スプリント開発**
 ```bash
-# High-intensity development setup
+# 高強度開発セットアップ
 claude-monitor --plan max20 --reset-hour 6
 ```
 
 
-## 🔧 Development Installation
+## 🔧 開発インストール
 
-For contributors and developers who want to work with the source code:
+ソースコードを扱いたい貢献者や開発者向け:
 
-### Quick Start (Development/Testing)
+### クイックスタート (開発/テスト)
 
 ```bash
-# Clone the repository
+# リポジトリをクローン
 git clone https://github.com/Maciek-roboblog/Claude-Code-Usage-Monitor.git
 cd Claude-Code-Usage-Monitor
 
-# Install in development mode
+# 開発モードでインストール
 pip install -e .
 
-# Run from source
+# ソースから実行
 python -m claude_monitor
 ```
 
 
-### v3.0.0 Testing Features
+### v3.0.0 テスト機能
 
-The new version includes a comprehensive test suite:
+新バージョンには、包括的なテストスイートが含まれています。
 
-- **100+ test cases** with full coverage
-- **Unit tests** for all components
-- **Integration tests** for end-to-end workflows
-- **Performance tests** with benchmarking
-- **Mock objects** for isolated testing
+- **100以上のテストケース**と完全なカバレッジ
+- すべてのコンポーネントの**単体テスト**
+- エンドツーエンドワークフローの**統合テスト**
+- ベンチマーク付きの**パフォーマンステスト**
+- 隔離されたテストのための**モックオブジェクト**
 
 ```bash
-# Run tests
+# テストを実行
 cd src/
 python -m pytest
 
-# Run with coverage
+# カバレッジ付きで実行
 python -m pytest --cov=claude_monitor --cov-report=html
 
-# Run specific test modules
+# 特定のテストモジュールを実行
 python -m pytest tests/test_analysis.py -v
 ```
 
 
-### Prerequisites
+### 前提条件
 
-1. **Python 3.9+** installed on your system
-2. **Git** for cloning the repository
+1. システムに**Python 3.9+**がインストールされていること
+2. リポジトリをクローンするための**Git**
 
+### 仮想環境のセットアップ
 
-### Virtual Environment Setup
+#### なぜ仮想環境を使用するのか？
 
-#### Why Use Virtual Environment?
+仮想環境の使用は**強く推奨されます**。その理由は次のとおりです。
 
-Using a virtual environment is **strongly recommended** because:
+- **🛡️ 隔離**: システムのPythonをクリーンに保ち、依存関係の競合を防ぎます
+- **📦 ポータビリティ**: 異なるマシンで正確な環境を簡単に再現できます
+- **🔄 バージョン管理**: 安定性のために特定のバージョンの依存関係をロックできます
+- **🧹 クリーンなアンインストール**: 仮想環境フォルダを削除するだけで、すべてを削除できます
+- **👥 チームコラボレーション**: 全員が同じPythonとパッケージバージョンを使用します
 
-- **🛡️ Isolation**: Keeps your system Python clean and prevents dependency conflicts
-- **📦 Portability**: Easy to replicate the exact environment on different machines
-- **🔄 Version Control**: Lock specific versions of dependencies for stability
-- **🧹 Clean Uninstall**: Simply delete the virtual environment folder to remove everything
-- **👥 Team Collaboration**: Everyone uses the same Python and package versions
+#### virtualenv のインストール (必要な場合)
 
-#### Installing virtualenv (if needed)
-
-If you don't have venv module available:
+venv モジュールが利用できない場合:
 
 ```bash
 # Ubuntu/Debian
@@ -921,129 +924,129 @@ sudo apt-get install python3-venv
 # Fedora/RHEL/CentOS
 sudo dnf install python3-venv
 
-# macOS (usually comes with Python)
-# If not available, install Python via Homebrew:
+# macOS (通常はPythonに付属)
+# 利用できない場合は、Homebrew 経由で Python をインストール:
 brew install python3
 
-# Windows (usually comes with Python)
-# If not available, reinstall Python from python.org
-# Make sure to check "Add Python to PATH" during installation
+# Windows (通常はPythonに付属)
+# 利用できない場合は、python.org から Python を再インストール
+# インストール中に「Add Python to PATH」をチェックしてください
 ```
 
 
-Alternatively, use the virtualenv package:
+または、virtualenv パッケージを使用します。
 ```bash
-# Install virtualenv via pip
+# pip 経由で virtualenv をインストール
 pip install virtualenv
 
-# Then create virtual environment with:
+# その後、次のコマンドで仮想環境を作成します:
 virtualenv venv
-# instead of: python3 -m venv venv
+# 代わりに: python3 -m venv venv
 ```
 
 
-#### Step-by-Step Setup
+#### ステップバイステップのセットアップ
 
 ```bash
-# 1. Clone the repository
+# 1. リポジトリをクローン
 git clone https://github.com/Maciek-roboblog/Claude-Code-Usage-Monitor.git
 cd Claude-Code-Usage-Monitor
 
-# 2. Create virtual environment
+# 2. 仮想環境を作成
 python3 -m venv venv
-# Or if using virtualenv package:
+# または virtualenv パッケージを使用する場合:
 # virtualenv venv
 
-# 3. Activate virtual environment
-# On Linux/Mac:
+# 3. 仮想環境をアクティブ化
+# Linux/Macの場合:
 source venv/bin/activate
-# On Windows:
+# Windowsの場合:
 # venv\Scripts\activate
 
-# 4. Install Python dependencies
+# 4. Python の依存関係をインストール
 pip install pytz
 pip install rich>=13.0.0
-# 5. Make script executable (Linux/Mac only)
+# 5. スクリプトを実行可能にする (Linux/Macのみ)
 chmod +x claude_monitor.py
 
-# 6. Run the monitor
+# 6. モニターを実行
 python claude_monitor.py
 ```
 
 
-#### Daily Usage
+#### 日常の使用
 
-After initial setup, you only need:
+初期設定後、必要なのは次のコマンドだけです。
 
 ```bash
-# Navigate to project directory
+# プロジェクトディレクトリに移動
 cd Claude-Code-Usage-Monitor
 
-# Activate virtual environment
+# 仮想環境をアクティブ化
 source venv/bin/activate  # Linux/Mac
 # venv\Scripts\activate   # Windows
 
-# Run monitor
+# モニターを実行
 ./claude_monitor.py  # Linux/Mac
 # python claude_monitor.py  # Windows
 
-# When done, deactivate
+# 完了したら、非アクティブ化
 deactivate
 ```
 
 
-#### Pro Tip: Shell Alias
+#### プロのヒント: シェルエイリアス
 
-Create an alias for quick access:
+クイックアクセス用のエイリアスを作成します。
 ```bash
-# Add to ~/.bashrc or ~/.zshrc
+# ~/.bashrc または ~/.zshrc に追加
 alias claude-monitor='cd ~/Claude-Code-Usage-Monitor && source venv/bin/activate && ./claude_monitor.py'
 
-# Then just run:
+# その後、実行するだけ:
 claude-monitor
 ```
 
 
-## Troubleshooting
+## トラブルシューティング
 
-### Installation Issues
+### インストールに関する問題
 
-#### "externally-managed-environment" Error
+#### 「externally-managed-environment」エラー
 
-On modern Linux distributions (Ubuntu 23.04+, Debian 12+, Fedora 38+), you may encounter:
+最新のLinuxディストリビューション (Ubuntu 23.04+, Debian 12+, Fedora 38+) では、次のエラーが発生する場合があります。
 ```
 error: externally-managed-environment
 × This environment is externally managed
 ```
 
 
-**Solutions (in order of preference):**
+**解決策 (推奨順):**
 
-1. **Use uv (Recommended)**
+1. **uv を使用する (推奨)**
 
 ```bash
-   # Install uv first
+   # まず uv をインストール
    curl -LsSf https://astral.sh/uv/install.sh | sh
 
-   # Then install with uv
+   # その後 uv でインストール
    uv tool install claude-monitor
    ```
 
 
-2. **Use pipx (Isolated Environment)**
+2. **pipx を使用する (隔離された環境)**
 
 ```bash
-   # Install pipx
+   # pipx をインストール
    sudo apt install pipx  # Ubuntu/Debian
-   # or
+   # または
    python3 -m pip install --user pipx
 
-   # Install claude-monitor
+   # claude-monitor をインストール
    pipx install claude-monitor
    ```
 
 
-3. **Use virtual environment**
+3. **仮想環境を使用する**
 
 ```bash
    python3 -m venv myenv
@@ -1052,57 +1055,57 @@ error: externally-managed-environment
    ```
 
 
-4. **Force installation (Not Recommended)**
+4. **強制インストール (非推奨)**
 
 ```bash
    pip install --user claude-monitor --break-system-packages
    ```
 
-   ⚠️ **Warning**: This bypasses system protection and may cause conflicts. We strongly recommend using a virtual environment instead.
+   ⚠️ **警告**: これはシステム保護をバイパスし、競合を引き起こす可能性があります。代わりに仮想環境を使用することを強くお勧めします。
 
-#### Command Not Found After pip Install
+#### pip インストール後にコマンドが見つからない
 
-If claude-monitor command is not found after pip installation:
+pip インストール後に claude-monitor コマンドが見つからない場合:
 
-1. **Check if it's a PATH issue**
+1. **PATH の問題かどうかを確認**
 
 ```bash
-   # Look for the warning message during pip install:
+   # pip インストール中に警告メッセージを探します:
    # WARNING: The script claude-monitor is installed in '/home/username/.local/bin' which is not on PATH
    ```
 
 
-2. **Add to PATH**
+2. **PATH に追加**
 
 ```bash
-   # Add this to ~/.bashrc or ~/.zshrc
+   # ~/.bashrc または ~/.zshrc に追加
    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 
-   # Reload shell
-   source ~/.bashrc  # or source ~/.zshrc
+   # シェルを再読み込み
+   source ~/.bashrc  # または source ~/.zshrc
    ```
 
 
-3. **Verify installation location**
+3. **インストール場所を確認**
 
 ```bash
-   # Find where pip installed the script
+   # pip がスクリプトをインストールした場所を見つける
    pip show -f claude-monitor | grep claude-monitor
    ```
 
 
-4. **Run directly with Python**
+4. **Python で直接実行**
 
 ```bash
    python3 -m claude_monitor
    ```
 
 
-#### Python Version Conflicts
+#### Python バージョンの競合
 
-If you have multiple Python versions:
+複数のPythonバージョンがある場合:
 
-1. **Check Python version**
+1. **Python バージョンを確認**
 
 ```bash
    python3 --version
@@ -1110,7 +1113,7 @@ If you have multiple Python versions:
    ```
 
 
-2. **Use specific Python version**
+2. **特定の Python バージョンを使用**
 
 ```bash
    python3.11 -m pip install claude-monitor
@@ -1118,23 +1121,24 @@ If you have multiple Python versions:
    ```
 
 
-3. **Use uv (handles Python versions automatically)**
+3. **uv を使用する (Python バージョンを自動的に処理)**
 
 ```bash
    uv tool install claude-monitor
    ```
 
 
-### Runtime Issues
+### 実行時の問題
 
-#### No active session found
-If you encounter the error No active session found, please follow these steps:
+#### アクティブなセッションが見つかりません
 
-1. **Initial Test**:
-   Launch Claude Code and send at least two messages. In some cases, the session may not initialize correctly on the first attempt, but it resolves after a few interactions.
+「No active session found」エラーが発生した場合は、次の手順に従ってください。
 
-2. **Configuration Path**:
-   If the issue persists, consider specifying a custom configuration path. By default, Claude Code uses ~/.config/claude. You may need to adjust this path depending on your environment.
+1. **初期テスト**:
+   Claude Code を起動し、少なくとも2つのメッセージを送信します。場合によっては、最初の試行でセッションが正しく初期化されないことがありますが、数回のやり取りで解決します。
+
+2. **設定パス**:
+   問題が解決しない場合は、カスタム設定パスを指定することを検討してください。デフォルトでは、Claude Code は ~/.config/claude を使用します。環境によっては、このパスを調整する必要がある場合があります。
 
 ```bash
 CLAUDE_CONFIG_DIR=~/.config/claude ./claude_monitor.py
@@ -1142,45 +1146,45 @@ CLAUDE_CONFIG_DIR=~/.config/claude ./claude_monitor.py
 
 
 
-## 📞 Contact
+## 📞 お問い合わせ
 
-Have questions, suggestions, or want to collaborate? Feel free to reach out!
+質問、提案、または共同作業をご希望ですか？お気軽にお問い合わせください！
 
-**📧 Email**: [maciek@roboblog.eu](mailto:maciek@roboblog.eu)
+**📧 メール**: [maciek@roboblog.eu](mailto:maciek@roboblog.eu)
 
-Whether you need help with setup, have feature requests, found a bug, or want to discuss potential improvements, don't hesitate to get in touch. I'm always happy to help and hear from users of the Claude Code Usage Monitor!
-
-
-## 📚 Additional Documentation
-
-- **[Development Roadmap](DEVELOPMENT.md)** - ML features, PyPI package, Docker plans
-- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute, development guidelines
-- **[Troubleshooting](TROUBLESHOOTING.md)** - Common issues and solutions
+セットアップに関するヘルプが必要な場合、機能リクエストがある場合、バグを見つけた場合、または潜在的な改善点について議論したい場合でも、お気軽にご連絡ください。Claude Code Usage Monitor のユーザーからのご意見をお待ちしております！
 
 
-## 📝 License
+## 📚 その他のドキュメント
 
-[MIT License](LICENSE) - feel free to use and modify as needed.
+- **[開発ロードマップ](DEVELOPMENT.md)** - ML機能、PyPIパッケージ、Dockerプラン
+- **[貢献ガイド](CONTRIBUTING.md)** - 貢献方法、開発ガイドライン
+- **[トラブルシューティング](TROUBLESHOOTING.md)** - 一般的な問題と解決策
 
-## 🤝 Contributors
+
+## 📝 ライセンス
+
+[MITライセンス](LICENSE) - 必要に応じて自由に使用および変更してください。
+
+## 🤝 貢献者
 
 - [@adawalli](https://github.com/adawalli)
 - [@taylorwilsdon](https://github.com/taylorwilsdon)
 - [@moneroexamples](https://github.com/moneroexamples)
 
-Want to contribute? Check out our [Contributing Guide](CONTRIBUTING.md)!
+貢献したいですか？[貢献ガイド](CONTRIBUTING.md) を確認してください！
 
 
-## 🙏 Acknowledgments
+## 🙏 謝辞
 
-### Sponsors
+### スポンサー
 
-A special thanks to our supporters who help keep this project going:
+このプロジェクトの継続を支援してくださるサポーターに感謝いたします。
 
-**Ed** - *Buy Me Coffee Supporter*
-> "I appreciate sharing your work with the world. It helps keep me on track with my day. Quality readme, and really good stuff all around!"
+**Ed** - *Buy Me Coffee サポーター*
+> 「あなたの作品を世界と共有してくださることに感謝しています。それは私が日々の作業を続けるのに役立っています。質の高いREADME、そして全体的に本当に良いものです！」
 
-## Star History
+## スター履歴
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Maciek-roboblog/Claude-Code-Usage-Monitor&type=Date)](https://www.star-history.com/#Maciek-roboblog/Claude-Code-Usage-Monitor&Date)
 
@@ -1188,8 +1192,8 @@ A special thanks to our supporters who help keep this project going:
 
 <div align="center">
 
-**⭐ Star this repo if you find it useful! ⭐**
+**⭐ このリポジトリが役に立ったらスターを付けてください！ ⭐**
 
-[Report Bug](https://github.com/Maciek-roboblog/Claude-Code-Usage-Monitor/issues) • [Request Feature](https://github.com/Maciek-roboblog/Claude-Code-Usage-Monitor/issues) • [Contribute](CONTRIBUTING.md)
+[バグを報告](https://github.com/Maciek-roboblog/Claude-Code-Usage-Monitor/issues) • [機能をリクエスト](https://github.com/Maciek-roboblog/Claude-Code-Usage-Monitor/issues) • [貢献する](CONTRIBUTING.md)
 
 </div>

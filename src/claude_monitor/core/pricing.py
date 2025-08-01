@@ -9,6 +9,7 @@ with caching.
 from typing import Any, Dict, Optional
 
 from claude_monitor.core.models import CostMode, TokenCounts, normalize_model_name
+from claude_monitor.utils.exchange_rate_utils import get_usd_to_jpy_rate
 
 
 class PricingCalculator:
@@ -131,6 +132,43 @@ class PricingCalculator:
         # Cache result
         self._cost_cache[cache_key] = cost
         return cost
+
+    def calculate_cost_jpy(
+        self,
+        model: str,
+        input_tokens: int = 0,
+        output_tokens: int = 0,
+        cache_creation_tokens: int = 0,
+        cache_read_tokens: int = 0,
+        tokens: Optional[TokenCounts] = None,
+        strict: bool = False,
+    ) -> Optional[float]:
+        """Calculate cost in JPY with flexible API supporting both signatures.
+
+        Args:
+            model: Model name
+            input_tokens: Number of input tokens (ignored if tokens provided)
+            output_tokens: Number of output tokens (ignored if tokens provided)
+            cache_creation_tokens: Number of cache creation tokens
+            cache_read_tokens: Number of cache read tokens
+            tokens: Optional TokenCounts object (takes precedence)
+
+        Returns:
+            Total cost in JPY, or None if exchange rate cannot be fetched
+        """
+        usd_cost = self.calculate_cost(
+            model=model,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+            cache_creation_tokens=cache_creation_tokens,
+            cache_read_tokens=cache_read_tokens,
+            tokens=tokens,
+            strict=strict,
+        )
+        jpy_rate = get_usd_to_jpy_rate()
+        if jpy_rate is None:
+            return None
+        return round(usd_cost * jpy_rate, 2)
 
     def _get_pricing_for_model(
         self, model: str, strict: bool = False

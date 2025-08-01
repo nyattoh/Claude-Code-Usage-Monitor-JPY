@@ -15,6 +15,7 @@ from rich.text import Text
 
 # Removed theme import - using direct styles
 from claude_monitor.utils.formatting import format_currency, format_number
+from claude_monitor.utils.exchange_rate_utils import get_usd_to_jpy_rate
 
 logger = logging.getLogger(__name__)
 
@@ -81,6 +82,9 @@ class TableViewsController:
         table.add_column(
             "Cost (USD)", style=self.success_style, justify="right", width=10
         )
+        table.add_column(
+            "Cost (JPY)", style=self.success_style, justify="right", width=10
+        )
 
         return table
 
@@ -103,6 +107,9 @@ class TableViewsController:
                 + data["cache_read_tokens"]
             )
 
+            jpy_rate = get_usd_to_jpy_rate()
+            total_cost_jpy = round(data["total_cost"] * jpy_rate, 2) if jpy_rate else "N/A"
+
             table.add_row(
                 data[period_key],
                 models_text,
@@ -112,6 +119,7 @@ class TableViewsController:
                 format_number(data["cache_read_tokens"]),
                 format_number(total_tokens),
                 format_currency(data["total_cost"]),
+                f"¥{format_number(total_cost_jpy)}",
             )
 
     def _add_totals_row(self, table: Table, totals: Dict[str, Any]) -> None:
@@ -125,6 +133,9 @@ class TableViewsController:
         table.add_row("", "", "", "", "", "", "", "")
 
         # Add totals row
+        jpy_rate = get_usd_to_jpy_rate()
+        total_cost_jpy = round(totals["total_cost"] * jpy_rate, 2) if jpy_rate else "N/A"
+
         table.add_row(
             Text("Total", style=self.accent_style),
             "",
@@ -136,6 +147,7 @@ class TableViewsController:
             Text(format_number(totals["cache_read_tokens"]), style=self.accent_style),
             Text(format_number(totals["total_tokens"]), style=self.accent_style),
             Text(format_currency(totals["total_cost"]), style=self.success_style),
+            Text(f"¥{format_number(total_cost_jpy)}", style=self.success_style),
         )
 
     def create_daily_table(
@@ -219,6 +231,7 @@ class TableViewsController:
             "",
             f"Total Tokens: {format_number(totals['total_tokens'])}",
             f"Total Cost: {format_currency(totals['total_cost'])}",
+            f"Total Cost (JPY): ¥{format_number(totals['total_cost_jpy'])}",
             f"Entries: {format_number(totals['entries_count'])}",
         ]
 
@@ -358,6 +371,12 @@ class TableViewsController:
             "total_cost": sum(d["total_cost"] for d in data),
             "entries_count": sum(d.get("entries_count", 0) for d in data),
         }
+
+        jpy_rate = get_usd_to_jpy_rate()
+        if jpy_rate:
+            totals["total_cost_jpy"] = round(totals["total_cost"] * jpy_rate, 2)
+        else:
+            totals["total_cost_jpy"] = "N/A"
 
         # Determine period for summary
         if view_mode == "daily":
