@@ -2,7 +2,7 @@
 
 **このリポジトリは、[Maciek-roboblog/Claude-Code-Usage-Monitor](https://github.com/Maciek-roboblog/Claude-Code-Usage-Monitor) のフォークであり、日本円でのコスト表示機能を追加し、READMEを日本語化したものです。**
 
-[![PyPI Version](https://img.shields.io/pypi/v/claude-monitor.svg)](https://pypi.org/project/claude-monitor/)
+[![PyPI Version](https://img.shields.io/pypi/v/claude-monitor-ja.svg)](https://pypi.org/project/claude-monitor-ja/)
 [![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
@@ -89,16 +89,16 @@ Claude AIのトークン使用量をリアルタイムで監視する美しい�
 
 モニターをインストールして使用する最も速く簡単な方法:
 
-[![PyPI](https://img.shields.io/pypi/v/claude-monitor.svg)](https://pypi.org/project/claude-monitor/)
+[![PyPI](https://img.shields.io/pypi/v/claude-monitor-ja.svg)](https://pypi.org/project/claude-monitor-ja/)
 
 #### PyPIからのインストール
 
 ```bash
 # uv を使用して PyPI から直接インストール (最も簡単)
-uv tool install claude-monitor
+uv tool install claude-monitor-ja
 
 # どこからでも実行
-claude-monitor  # または cmonitor, ccmonitor (短縮形)
+claude-monitor-ja  # または cmonitor, ccmonitor (短縮形)
 ```
 
 
@@ -111,7 +111,7 @@ cd Claude-Code-Usage-Monitor
 uv tool install .
 
 # どこからでも実行
-claude-monitor
+claude-monitor-ja
 ```
 
 
@@ -134,24 +134,24 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 
 ```bash
 # PyPI からインストール
-pip install claude-monitor
+pip install claude-monitor-ja
 
-# claude-monitor コマンドが見つからない場合は、~/.local/bin を PATH に追加します:
+# claude-monitor-ja コマンドが見つからない場合は、~/.local/bin を PATH に追加します:
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc  # またはターミナルを再起動
 
 # どこからでも実行
-claude-monitor  # または cmonitor, ccmonitor (短縮形)
+claude-monitor-ja  # または cmonitor, ccmonitor (短縮形)
 ```
 
 
 >
-> **⚠️ PATH 設定**: WARNING: The script claude-monitor is installed in '/home/username/.local/bin' which is not on PATH と表示された場合は、上記の export PATH コマンドに従ってください。
+> **⚠️ PATH 設定**: WARNING: The script claude-monitor-ja is installed in '/home/username/.local/bin' which is not on PATH と表示された場合は、上記の export PATH コマンドに従ってください。
 >
 > **⚠️ 重要**: 最新のLinuxディストリビューション (Ubuntu 23.04+, Debian 12+, Fedora 38+) では、「externally-managed-environment」エラーが発生する場合があります。--break-system-packages を使用する代わりに、次のことを強くお勧めします。
 > 1. **uv を使用する** (上記参照) - より安全で簡単です
 > 2. **仮想環境を使用する** - python3 -m venv myenv && source myenv/bin/activate
-> 3. **pipx を使用する** - pipx install claude-monitor
+> 3. **pipx を使用する** - pipx install claude-monitor-ja
 >
 > 詳細な解決策については、トラブルシューティングセクションを参照してください。
 
@@ -160,20 +160,20 @@ claude-monitor  # または cmonitor, ccmonitor (短縮形)
 #### pipx (隔離された環境)
 ```bash
 # pipx でインストール
-pipx install claude-monitor
+pipx install claude-monitor-ja
 
 # どこからでも実行
-claude-monitor  # または claude-code-monitor, cmonitor, ccmonitor, ccm (短縮形)
+claude-monitor-ja  # または claude-code-monitor, cmonitor, ccmonitor, ccm (短縮形)
 ```
 
 
 #### conda/mamba
 ```bash
 # conda 環境で pip を使用してインストール
-pip install claude-monitor
+pip install claude-monitor-ja
 
 # どこからでも実行
-claude-monitor  # または cmonitor, ccmonitor (短縮形)
+claude-monitor-ja  # または cmonitor, ccmonitor (短縮形)
 ```
 
 
@@ -183,7 +183,7 @@ claude-monitor  # または cmonitor, ccmonitor (短縮形)
 
 ```bash
 # ヘルプ情報を表示
-claude-monitor --help
+claude-monitor-ja --help
 ```
 
 #### 利用可能なコマンドラインパラメータ
@@ -217,7 +217,7 @@ claude-monitor --help
 #### コマンドエイリアス
 
 このツールは、次のいずれかのコマンドを使用して呼び出すことができます。
-- claude-monitor (プライマリ)
+- claude-monitor-ja (プライマリ)
 - claude-code-monitor (フルネーム)
 - cmonitor (短縮形)
 - ccmonitor (短縮形の代替)
@@ -236,21 +236,21 @@ claude-monitor --help
 - リセット時間 (--reset-hour)
 - カスタムトークン制限 (--custom-limit-tokens)
 
-**設定の場所:** ~/.claude-monitor/last_used.json
+**設定の場所:** ~/.claude-monitor-ja/last_used.json
 
 **使用例:**
 ```bash
 # 初回実行 - 設定を指定
-claude-monitor --plan pro --theme dark --timezone "America/New_York"
+claude-monitor-ja --plan pro --theme dark --timezone "America/New_York"
 
 # 以降の実行 - 設定は自動的に復元されます
-claude-monitor --plan pro
+claude-monitor-ja --plan pro
 
 # このセッションの保存された設定を上書き
-claude-monitor --plan pro --theme light
+claude-monitor-ja --plan pro --theme light
 
 # 保存されたすべての設定をクリア
-claude-monitor --clear
+claude-monitor-ja --clear
 ```
 
 **主な機能:**
@@ -265,7 +265,7 @@ claude-monitor --clear
 #### uv ツールインストールの場合 (推奨)
 ```bash
 # デフォルト (自動検出付きカスタムプラン)
-claude-monitor
+claude-monitor-ja
 
 # 代替コマンド
 claude-code-monitor  # 完全な説明名
@@ -287,42 +287,42 @@ ccm                  # 最短エイリアス
 
 ```bash
 # P90自動検出付きカスタムプラン (デフォルト)
-claude-monitor --plan custom
+claude-monitor-ja --plan custom
 
 # Pro プラン (~44,000 トークン)
-claude-monitor --plan pro
+claude-monitor-ja --plan pro
 
 # Max5 プラン (~88,000 トークン)
-claude-monitor --plan max5
+claude-monitor-ja --plan max5
 
 # Max20 プラン (~220,000 トークン)
-claude-monitor --plan max20
+claude-monitor-ja --plan max20
 
 # 明示的なトークン制限付きカスタムプラン
-claude-monitor --plan custom --custom-limit-tokens 100000
+claude-monitor-ja --plan custom --custom-limit-tokens 100000
 ```
 
 #### カスタムリセット時間
 
 ```bash
 # 午前3時にリセット
-claude-monitor --reset-hour 3
+claude-monitor-ja --reset-hour 3
 
 # 午後10時にリセット
-claude-monitor --reset-hour 22
+claude-monitor-ja --reset-hour 22
 ```
 
 #### 使用状況表示の設定
 
 ```bash
 # ライブアップデート付きリアルタイム監視 (デフォルト)
-claude-monitor --view realtime
+claude-monitor-ja --view realtime
 
 # テーブル形式で集計された毎日のトークン使用量
-claude-monitor --view daily
+claude-monitor-ja --view daily
 
 # テーブル形式で集計された毎月のトークン使用量
-claude-monitor --view monthly
+claude-monitor-ja --view monthly
 
 ```
 
@@ -330,19 +330,19 @@ claude-monitor --view monthly
 
 ```bash
 # リフレッシュレートの調整 (1-60秒、デフォルト: 10)
-claude-monitor --refresh-rate 5
+claude-monitor-ja --refresh-rate 5
 
 # ディスプレイリフレッシュレートの調整 (0.1-20 Hz、デフォルト: 0.75)
-claude-monitor --refresh-per-second 1.0
+claude-monitor-ja --refresh-per-second 1.0
 
 # 時間形式の設定 (デフォルトで自動検出)
-claude-monitor --time-format 24h  # または 12h
+claude-monitor-ja --time-format 24h  # または 12h
 
 # 特定のテーマを強制
-claude-monitor --theme dark  # light, dark, classic, auto
+claude-monitor-ja --theme dark  # light, dark, classic, auto
 
 # 保存された設定をクリア
-claude-monitor --clear
+claude-monitor-ja --clear
 ```
 
 #### タイムゾーン設定
@@ -351,29 +351,29 @@ claude-monitor --clear
 
 ```bash
 # 米国東部時間を使用
-claude-monitor --timezone America/New_York
+claude-monitor-ja --timezone America/New_York
 
 # 東京時間を使用
-claude-monitor --timezone Asia/Tokyo
+claude-monitor-ja --timezone Asia/Tokyo
 
 # UTC を使用
-claude-monitor --timezone UTC
+claude-monitor-ja --timezone UTC
 
 # ロンドン時間を使用
-claude-monitor --timezone Europe/London
+claude-monitor-ja --timezone Europe/London
 ```
 
 #### ロギングとデバッグ
 
 ```bash
 # デバッグロギングを有効にする
-claude-monitor --debug
+claude-monitor-ja --debug
 
 # ファイルにログを記録
-claude-monitor --log-file ~/.claude-monitor/logs/monitor.log
+claude-monitor-ja --log-file ~/.claude-monitor-ja/logs/monitor.log
 
 # ログレベルを設定
-claude-monitor --log-level WARNING  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+claude-monitor-ja --log-level WARNING  # DEBUG, INFO, WARNING, ERROR, CRITICAL
 ```
 
 ### 利用可能なプラン
@@ -418,7 +418,7 @@ claude-monitor --log-level WARNING  # DEBUG, INFO, WARNING, ERROR, CRITICAL
 - コマンドエイリアス: claude-code-monitor, cmonitor, ccmonitor, ccm (利便性のため)
 
 #### **破壊的変更**
-- パッケージ名が claude-usage-monitor から claude-monitor に変更されました
+- パッケージ名が claude-usage-monitor から claude-monitor-ja に変更されました
 - デフォルトプランが pro から custom (自動検出付き) に変更されました
 - 最小Pythonバージョンが3.9+に引き上げられました
 - コマンド構造が更新されました (上記の例を参照)
@@ -636,10 +636,10 @@ tzdata                      # Windows タイムゾーンデータ
 
 ```bash
 # 以前の最高使用量を自動検出
-claude-monitor --plan custom_max
+claude-monitor-ja --plan custom_max
 
 # カスタムスケジューリングで監視
-claude-monitor --plan custom_max --reset-hour 6
+claude-monitor-ja --plan custom_max --reset-hour 6
 ```
 
 
@@ -653,16 +653,16 @@ claude-monitor --plan custom_max --reset-hour 6
 
 ```bash
 # 米国東海岸
-claude-monitor --timezone America/New_York
+claude-monitor-ja --timezone America/New_York
 
 # ヨーロッパ
-claude-monitor --timezone Europe/London
+claude-monitor-ja --timezone Europe/London
 
 # アジア太平洋
-claude-monitor --timezone Asia/Singapore
+claude-monitor-ja --timezone Asia/Singapore
 
 # 国際チーム連携のためのUTC
-claude-monitor --timezone UTC --reset-hour 12
+claude-monitor-ja --timezone UTC --reset-hour 12
 ```
 
 
@@ -671,7 +671,7 @@ claude-monitor --timezone UTC --reset-hour 12
 
 ```bash
 # デフォルトで実行
-claude-monitor
+claude-monitor-ja
 
 # ステータス確認後、Ctrl+C を押して終了
 ```
@@ -681,16 +681,16 @@ claude-monitor
 
 ```bash
 # 詳細な統計情報を含む日次使用状況の内訳を表示
-claude-monitor --view daily
+claude-monitor-ja --view daily
 
 # 月次トークン消費トレンドを分析
-claude-monitor --view monthly --plan max20
+claude-monitor-ja --view monthly --plan max20
 
 # 分析のために日次使用状況データをログファイルにエクスポート
-claude-monitor --view daily --log-file ~/daily-usage.log
+claude-monitor-ja --view daily --log-file ~/daily-usage.log
 
 # 異なるタイムゾーンで使用状況を確認
-claude-monitor --view daily --timezone America/New_York
+claude-monitor-ja --view daily --timezone America/New_York
 ```
 
 **ユースケース**:
@@ -705,7 +705,7 @@ claude-monitor --view daily --timezone America/New_York
 **デフォルトから開始 (新規ユーザーに推奨)**
 ```bash
 # 自動切り替え付きProプラン検出
-claude-monitor
+claude-monitor-ja
 ```
 
 - モニターはPro制限を超えたかどうかを検出します
@@ -715,17 +715,17 @@ claude-monitor
 **既知のサブスクリプションユーザー**
 ```bash
 # Max5 を持っていることがわかっている場合
-claude-monitor --plan max5
+claude-monitor-ja --plan max5
 
 # Max20 を持っていることがわかっている場合
-claude-monitor --plan max20
+claude-monitor-ja --plan max20
 ```
 
 
 **不明な制限**
 ```bash
 # 以前の使用状況から自動検出
-claude-monitor --plan custom_max
+claude-monitor-ja --plan custom_max
 ```
 
 
@@ -737,7 +737,7 @@ claude-monitor --plan custom_max
 
 ```bash
    # Claude 作業を開始するときに監視を開始 (uv インストール)
-   claude-monitor
+   claude-monitor-ja
 
    # または開発モード
    ./claude_monitor.py
@@ -751,8 +751,8 @@ claude-monitor --plan custom_max
 
 ```bash
    # uv で簡単にインストールと更新
-   uv tool install claude-monitor
-   claude-monitor --plan max5
+   uv tool install claude-monitor-ja
+   claude-monitor-ja --plan max5
    ```
 
    - クリーンなシステムインストール
@@ -763,7 +763,7 @@ claude-monitor --plan custom_max
 
 ```bash
    # ~/.bashrc または ~/.zshrc に追加 (開発設定のみ)
-   alias claude-monitor='cd ~/Claude-Code-Usage-Monitor && source venv/bin/activate && ./claude_monitor.py'
+   alias claude-monitor-ja='cd ~/Claude-Code-Usage-Monitor && source venv/bin/activate && ./claude_monitor.py'
    ```
 
 
@@ -778,7 +778,7 @@ claude-monitor --plan custom_max
 
 ```bash
    # リセット時間に合わせて大量の使用を計画
-   claude-monitor --reset-hour 9
+   claude-monitor-ja --reset-hour 9
    ```
 
    - リセット後に大規模なタスクをスケジュール
@@ -789,7 +789,7 @@ claude-monitor --plan custom_max
 
 ```bash
    # 常に実際のタイムゾーンを使用
-   claude-monitor --timezone Europe/Warsaw
+   claude-monitor-ja --timezone Europe/Warsaw
    ```
 
    - 正確なリセット時間の予測
@@ -808,13 +808,13 @@ claude-monitor --plan custom_max
 
 ```bash
    # 開発セッションで監視を開始 (uv インストール)
-   tmux new-session -d -s claude-monitor 'claude-monitor'
+   tmux new-session -d -s claude-monitor-ja 'claude-monitor-ja'
 
    # または開発モード
-   tmux new-session -d -s claude-monitor './claude_monitor.py'
+   tmux new-session -d -s claude-monitor-ja './claude_monitor.py'
 
    # いつでもステータスを確認
-   tmux attach -t claude-monitor
+   tmux attach -t claude-monitor-ja
    ```
 
 
@@ -828,7 +828,7 @@ claude-monitor --plan custom_max
 **大規模プロジェクト開発**
 ```bash
 # 持続的な開発のためのセットアップ
-claude-monitor --plan max20 --reset-hour 8 --timezone America/New_York
+claude-monitor-ja --plan max20 --reset-hour 8 --timezone America/New_York
 ```
 
 
@@ -842,14 +842,14 @@ claude-monitor --plan max20 --reset-hour 8 --timezone America/New_York
 **学習と実験**
 ```bash
 # 学習のための柔軟なセットアップ
-claude-monitor --plan pro
+claude-monitor-ja --plan pro
 ```
 
 
 **スプリント開発**
 ```bash
 # 高強度開発セットアップ
-claude-monitor --plan max20 --reset-hour 6
+claude-monitor-ja --plan max20 --reset-hour 6
 ```
 
 
@@ -1000,10 +1000,10 @@ deactivate
 クイックアクセス用のエイリアスを作成します。
 ```bash
 # ~/.bashrc または ~/.zshrc に追加
-alias claude-monitor='cd ~/Claude-Code-Usage-Monitor && source venv/bin/activate && ./claude_monitor.py'
+alias claude-monitor-ja='cd ~/Claude-Code-Usage-Monitor && source venv/bin/activate && ./claude_monitor.py'
 
 # その後、実行するだけ:
-claude-monitor
+claude-monitor-ja
 ```
 
 
@@ -1029,7 +1029,7 @@ error: externally-managed-environment
    curl -LsSf https://astral.sh/uv/install.sh | sh
 
    # その後 uv でインストール
-   uv tool install claude-monitor
+   uv tool install claude-monitor-ja
    ```
 
 
@@ -1041,8 +1041,8 @@ error: externally-managed-environment
    # または
    python3 -m pip install --user pipx
 
-   # claude-monitor をインストール
-   pipx install claude-monitor
+   # claude-monitor-ja をインストール
+   pipx install claude-monitor-ja
    ```
 
 
@@ -1051,27 +1051,27 @@ error: externally-managed-environment
 ```bash
    python3 -m venv myenv
    source myenv/bin/activate
-   pip install claude-monitor
+   pip install claude-monitor-ja
    ```
 
 
 4. **強制インストール (非推奨)**
 
 ```bash
-   pip install --user claude-monitor --break-system-packages
+   pip install --user claude-monitor-ja --break-system-packages
    ```
 
    ⚠️ **警告**: これはシステム保護をバイパスし、競合を引き起こす可能性があります。代わりに仮想環境を使用することを強くお勧めします。
 
 #### pip インストール後にコマンドが見つからない
 
-pip インストール後に claude-monitor コマンドが見つからない場合:
+pip インストール後に claude-monitor-ja コマンドが見つからない場合:
 
 1. **PATH の問題かどうかを確認**
 
 ```bash
    # pip インストール中に警告メッセージを探します:
-   # WARNING: The script claude-monitor is installed in '/home/username/.local/bin' which is not on PATH
+   # WARNING: The script claude-monitor-ja is installed in '/home/username/.local/bin' which is not on PATH
    ```
 
 
@@ -1090,7 +1090,7 @@ pip インストール後に claude-monitor コマンドが見つからない場
 
 ```bash
    # pip がスクリプトをインストールした場所を見つける
-   pip show -f claude-monitor | grep claude-monitor
+   pip show -f claude-monitor-ja | grep claude-monitor-ja
    ```
 
 
@@ -1116,7 +1116,7 @@ pip インストール後に claude-monitor コマンドが見つからない場
 2. **特定の Python バージョンを使用**
 
 ```bash
-   python3.11 -m pip install claude-monitor
+   python3.11 -m pip install claude-monitor-ja
    python3.11 -m claude_monitor
    ```
 
@@ -1124,7 +1124,7 @@ pip インストール後に claude-monitor コマンドが見つからない場
 3. **uv を使用する (Python バージョンを自動的に処理)**
 
 ```bash
-   uv tool install claude-monitor
+   uv tool install claude-monitor-ja
    ```
 
 
