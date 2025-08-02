@@ -21,6 +21,7 @@ from claude_monitor.utils.time_utils import (
     get_time_format_preference,
     percentage,
 )
+from claude_monitor.utils.exchange_rate_utils import get_usd_to_jpy_rate
 
 
 @dataclass
@@ -207,9 +208,22 @@ class SessionDisplayComponent:
                 else 0
             )
             cost_bar = self._render_wide_progress_bar(cost_percentage)
-            screen_buffer.append(
-                f"💰 [value]Cost Usage:[/]           {cost_bar} {cost_percentage:4.1f}%    [value]${session_cost:.2f}[/] / [dim]${cost_limit_p90:.2f}[/]"
-            )
+            
+            # Add JPY conversion
+            jpy_rate = get_usd_to_jpy_rate()
+            if jpy_rate:
+                session_cost_jpy = session_cost * jpy_rate
+                cost_limit_p90_jpy = cost_limit_p90 * jpy_rate
+                screen_buffer.append(
+                    f"💰 [value]Cost Usage:[/]           {cost_bar} {cost_percentage:4.1f}%    [value]${session_cost:.2f}[/] / [dim]${cost_limit_p90:.2f}[/]"
+                )
+                screen_buffer.append(
+                    f"💰 [value]Cost Usage (JPY):[/]      {cost_bar} {cost_percentage:4.1f}%    [value]¥{session_cost_jpy:.2f}[/] / [dim]¥{cost_limit_p90_jpy:.2f}[/]"
+                )
+            else:
+                screen_buffer.append(
+                    f"💰 [value]Cost Usage:[/]           {cost_bar} {cost_percentage:4.1f}%    [value]${session_cost:.2f}[/] / [dim]${cost_limit_p90:.2f}[/]"
+                )
             screen_buffer.append("")
 
             token_bar = self._render_wide_progress_bar(usage_percentage)
@@ -265,6 +279,14 @@ class SessionDisplayComponent:
             screen_buffer.append(
                 f"💲 [value]Cost Rate:[/]              {cost_per_min_display} [dim]$/min[/]"
             )
+            
+            # Add JPY cost rate
+            jpy_rate = get_usd_to_jpy_rate()
+            if jpy_rate:
+                cost_per_min_jpy = cost_per_min * jpy_rate
+                screen_buffer.append(
+                    f"💲 [value]Cost Rate (JPY):[/]        ¥{cost_per_min_jpy:.2f} [dim]¥/min[/]"
+                )
         else:
             cost_display = CostIndicator.render(session_cost)
             cost_per_min = (
@@ -274,9 +296,23 @@ class SessionDisplayComponent:
             )
             cost_per_min_display = CostIndicator.render(cost_per_min)
             screen_buffer.append(f"💲 [value]Session Cost:[/]   {cost_display}")
+            
+            # Add JPY session cost
+            jpy_rate = get_usd_to_jpy_rate()
+            if jpy_rate:
+                session_cost_jpy = session_cost * jpy_rate
+                screen_buffer.append(f"💲 [value]Session Cost (JPY):[/] ¥{session_cost_jpy:.2f}")
+            
             screen_buffer.append(
                 f"💲 [value]Cost Rate:[/]      {cost_per_min_display} [dim]$/min[/]"
             )
+            
+            # Add JPY cost rate for compact mode
+            if jpy_rate:
+                cost_per_min_jpy = cost_per_min * jpy_rate
+                screen_buffer.append(
+                    f"💲 [value]Cost Rate (JPY):[/]  ¥{cost_per_min_jpy:.2f} [dim]¥/min[/]"
+                )
             screen_buffer.append("")
 
             token_bar = self.token_progress.render(usage_percentage)
