@@ -196,7 +196,7 @@ class DisplayController:
         }
 
     def create_data_display(
-        self, data: Dict[str, Any], args: Any, token_limit: int
+        self, data: Dict[str, Any], args: Any, token_limit: int, total_session_cost: float = 0.0
     ) -> RenderableType:
         """Create display renderable from data.
 
@@ -204,6 +204,7 @@ class DisplayController:
             data: Usage data dictionary
             args: Command line arguments
             token_limit: Current token limit
+            total_session_cost: Total cost from all sessions
 
         Returns:
             Rich renderable for display
@@ -254,6 +255,8 @@ class DisplayController:
             processed_data = self._process_active_session_data(
                 active_block, data, args, token_limit, current_time, cost_limit_p90
             )
+            # Add total session cost to processed data
+            processed_data["total_session_cost"] = total_session_cost
         except Exception as e:
             # Log the error and show error screen
             logger = logging.getLogger(__name__)

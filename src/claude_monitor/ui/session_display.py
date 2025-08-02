@@ -49,6 +49,7 @@ class SessionDisplayData:
     current_time_str: str
     show_switch_notification: bool = False
     show_exceed_notification: bool = False
+    total_session_cost: float = 0.0
     show_tokens_will_run_out: bool = False
     original_limit: int = 0
 
@@ -127,6 +128,7 @@ class SessionDisplayComponent:
             show_exceed_notification=data.show_exceed_notification,
             show_tokens_will_run_out=data.show_tokens_will_run_out,
             original_limit=data.original_limit,
+            total_session_cost=data.total_session_cost,
         )
 
     def format_active_session_screen(
@@ -302,6 +304,14 @@ class SessionDisplayComponent:
             if jpy_rate:
                 session_cost_jpy = session_cost * jpy_rate
                 screen_buffer.append(f"💲 [value]Session Cost (JPY):[/] ¥{session_cost_jpy:.2f}")
+            
+            # Add total cost since monitoring started
+            total_session_cost = kwargs.get("total_session_cost", 0.0)
+            if total_session_cost > 0:
+                screen_buffer.append(f"💰 [value]Total Cost:[/]     ${total_session_cost:.2f}")
+                if jpy_rate:
+                    total_cost_jpy = total_session_cost * jpy_rate
+                    screen_buffer.append(f"💰 [value]Total Cost (JPY):[/]  ¥{total_cost_jpy:.2f}")
             
             screen_buffer.append(
                 f"💲 [value]Cost Rate:[/]      {cost_per_min_display} [dim]$/min[/]"

@@ -16,6 +16,7 @@ class SessionMonitor:
             Callable[[str, str, Optional[Dict[str, Any]]], None]
         ] = []
         self._session_history: List[Dict[str, Any]] = []
+        self._current_session_data: Optional[Dict[str, Any]] = None
 
     def update(self, data: Dict[str, Any]) -> Tuple[bool, List[str]]:
         """Update session tracking with new data and validate.
@@ -48,6 +49,8 @@ class SessionMonitor:
                     self._current_session_id, session_id, active_session
                 )
                 self._current_session_id = session_id
+            # Store current session data for total cost calculation
+            self._current_session_data = active_session
         elif self._current_session_id is not None:
             self._on_session_end(self._current_session_id)
             self._current_session_id = None
@@ -146,6 +149,18 @@ class SessionMonitor:
                 callback("session_start", new_id, session_data)
             except Exception as e:
                 logger.exception(f"Session callback error: {e}")
+
+    def get_total_session_cost(self) -> float:
+        """Get total cost from all sessions since monitoring started.
+        
+        Returns:
+            Total cost in USD
+        """
+        total_cost = sum(session.get("cost", 0) for session in self._session_history)
+        # Add current session cost if exists
+        if self._current_session_id and hasattr(self, "_current_session_data"):
+            total_cost += self._current_session_data.get("costUSD", 0)
+        return total_cost
 
     def _on_session_end(self, session_id: str) -> None:
         """Handle session end.

@@ -189,7 +189,8 @@ def _run_monitoring(args: argparse.Namespace) -> None:
                             logger.debug(f"Active block tokens: {total_tokens}")
 
                     renderable = display_controller.create_data_display(
-                        data, args, monitoring_data.get("token_limit", token_limit)
+                        data, args, monitoring_data.get("token_limit", token_limit),
+                        monitoring_data.get("total_session_cost", 0.0)
                     )
 
                     if live_display:

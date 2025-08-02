@@ -176,6 +176,7 @@ class MonitoringOrchestrator:
                 "args": self._args,
                 "session_id": self.session_monitor.current_session_id,
                 "session_count": self.session_monitor.session_count,
+                "total_session_cost": self.session_monitor.get_total_session_cost(),
             }
 
             # Store last valid data
