@@ -10,7 +10,7 @@
 
 Claude AIのトークン使用量をリアルタイムで監視する美しいターミナルツールです。高度な分析、機械学習ベースの予測、リッチなUIを備えています。トークン消費量、バーンレート、コスト分析を追跡し、セッション制限に関するインテリジェントな予測を取得できます。
 
-![Claude Token Monitor Screenshot](https://raw.githubusercontent.com/Maciek-roboblog/Claude-Code-Usage-Monitor/main/doc/sc.png)
+![Claude Token Monitor Screenshot](doc/sc.png)
 
 ---
 
